@@ -1,6 +1,7 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { Phone, MapPin, Clock, Menu } from 'lucide-react';
+
+const prefix = process.env.NODE_ENV === 'production' ? '/dobrodent' : '';
 
 export default function Header() {
   return (
@@ -36,7 +37,7 @@ export default function Header() {
         <div className="flex justify-between h-20 items-center">
           <div className="flex-shrink-0 flex items-center">
             <Link href="/" className="flex items-center gap-3">
-              <Image src="/logo.png" alt="Добродент" width={40} height={40} className="h-10 w-auto object-contain" />
+              <img src={`${prefix}/logo.png`} alt="Добродент" className="h-10 w-auto object-contain" />
               <span className="text-xl font-bold text-primary tracking-tight hidden sm:block">
                 Добродент
               </span>

@@ -1,7 +1,8 @@
 import Link from "next/link";
-import Image from "next/image";
 import { CheckCircle2, HeartPulse, Clock, Sparkles, ArrowRight } from "lucide-react";
 import FAQSection from "@/components/FAQSection";
+
+const prefix = process.env.NODE_ENV === 'production' ? '/dobrodent' : '';
 
 export default function Home() {
   return (
@@ -33,7 +34,7 @@ export default function Home() {
               </div>
             </div>
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg border border-border">
-              <Image src="/img_9885.jpg" alt="Добродент клініка" fill className="object-cover" />
+              <img src={`${prefix}/img_9885.jpg`} alt="Добродент клініка" className="w-full h-full object-cover" />
             </div>
           </div>
         </div>
