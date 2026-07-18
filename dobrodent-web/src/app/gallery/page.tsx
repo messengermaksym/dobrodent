@@ -20,11 +20,16 @@ export default function Gallery() {
 
   return (
     <div className="pt-8 pb-16 sm:pt-12 sm:pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mb-16">
-        <h1 className="text-4xl font-bold tracking-tight text-foreground mb-6">Фотогалерея</h1>
-        <p className="text-lg text-muted-foreground">
-          Запрошуємо вас на віртуальну екскурсію нашою клінікою. Сучасне обладнання,
-          комфортні кабінети та привітна атмосфера чекають на вас.
+      {/* Page Header (Option A: Centered typographic) */}
+      <div className="max-w-3xl mx-auto text-center mb-16 pb-8 border-b border-border">
+        <span className="text-primary font-semibold tracking-wider text-xs uppercase mb-3 block">
+          Простір клініки
+        </span>
+        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground mb-4">
+          Атмосфера комфорту та турботи
+        </h1>
+        <p className="text-lg text-muted-foreground leading-relaxed">
+          Запрошуємо вас на віртуальну екскурсію нашою клінікою. Ми створили сучасний, безпечний та затишний простір, де кожен пацієнт почувається спокійно, а лікування проходить без зайвого стресу.
         </p>
       </div>
 

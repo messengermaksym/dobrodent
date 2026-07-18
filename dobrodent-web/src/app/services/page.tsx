@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { ArrowRight, ShieldCheck, Stethoscope, Baby, Activity, TestTube } from "lucide-react";
 
+const prefix = process.env.NODE_ENV === 'production' ? '/dobrodent' : '';
+
 export default function Services() {
   const services = [
     {
@@ -43,10 +45,16 @@ export default function Services() {
 
   return (
     <div className="pt-8 pb-16 sm:pt-12 sm:pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mb-16">
-        <h1 className="text-4xl font-bold tracking-tight text-foreground mb-6">Наші Послуги</h1>
-        <p className="text-lg text-muted-foreground">
-          Ми пропонуємо повний спектр стоматологічних послуг з використанням сучасних технологій та матеріалів для всієї родини.
+      {/* Page Header (Option A: Centered typographic) */}
+      <div className="max-w-3xl mx-auto text-center mb-16 pb-8 border-b border-border">
+        <span className="text-primary font-semibold tracking-wider text-xs uppercase mb-3 block">
+          Напрямки лікування
+        </span>
+        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground mb-4">
+          Якісна стоматологія для всієї родини
+        </h1>
+        <p className="text-lg text-muted-foreground leading-relaxed">
+          Ми пропонуємо повний спектр стоматологічних послуг з використанням сучасних технологій та матеріалів для всієї родини. Від профілактичної гігієни до складної імплантації — ми дбаємо про здоров'я та красу вашої усмішки.
         </p>
       </div>
 

@@ -1,13 +1,20 @@
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 
+const prefix = process.env.NODE_ENV === 'production' ? '/dobrodent' : '';
+
 export default function Contact() {
   return (
     <div className="pt-8 pb-16 sm:pt-12 sm:pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mb-16">
-        <h1 className="text-4xl font-bold tracking-tight text-foreground mb-6">Контакти</h1>
-        <p className="text-lg text-muted-foreground">
-          Запишіться на прийом або задайте нам питання. Ми завжди раді допомогти вам 
-          зберегти здоров'я та красу вашої усмішки.
+      {/* Page Header (Option A: Centered typographic) */}
+      <div className="max-w-3xl mx-auto text-center mb-16 pb-8 border-b border-border">
+        <span className="text-primary font-semibold tracking-wider text-xs uppercase mb-3 block">
+          Зворотний зв'язок
+        </span>
+        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground mb-4">
+          Завжди на зв'язку з вами
+        </h1>
+        <p className="text-lg text-muted-foreground leading-relaxed">
+          Запишіться на прийом, отримайте первинну консультацію або задайте нам будь-яке запитання. Ми завжди раді допомогти вам зберегти здоров'я та красу вашої усмішки.
         </p>
       </div>
 

@@ -30,11 +30,16 @@ export default function Specialists() {
 
   return (
     <div className="pt-8 pb-16 sm:pt-12 sm:pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mb-16">
-        <h1 className="text-4xl font-bold tracking-tight text-foreground mb-6">Наші Спеціалісти</h1>
-        <p className="text-lg text-muted-foreground">
-          Команда професіоналів з багаторічним досвідом роботи, які постійно вдосновалюють свої навички, 
-          щоб надавати вам найкраще лікування.
+      {/* Page Header (Option A: Centered typographic) */}
+      <div className="max-w-3xl mx-auto text-center mb-16 pb-8 border-b border-border">
+        <span className="text-primary font-semibold tracking-wider text-xs uppercase mb-3 block">
+          Команда Добродент
+        </span>
+        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground mb-4">
+          Лікарі, яким довіряють
+        </h1>
+        <p className="text-lg text-muted-foreground leading-relaxed">
+          Ми зібрали професіоналів з багаторічним досвідом роботи, які не лише лікують, але й постійно вдосконалюються, щоб зробити ваше перебування в клініці максимально комфортним, а лікування — ефективним.
         </p>
       </div>
 

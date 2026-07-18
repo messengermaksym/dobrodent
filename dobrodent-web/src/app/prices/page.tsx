@@ -1,5 +1,7 @@
 import { Check } from "lucide-react";
 
+const prefix = process.env.NODE_ENV === 'production' ? '/dobrodent' : '';
+
 export default function Prices() {
   const categories = [
     {
@@ -41,11 +43,16 @@ export default function Prices() {
 
   return (
     <div className="pt-8 pb-16 sm:pt-12 sm:pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mb-16">
-        <h1 className="text-4xl font-bold tracking-tight text-foreground mb-6">Ціни на послуги</h1>
-        <p className="text-lg text-muted-foreground">
-          Ми пропонуємо прозору цінову політику та високу якість послуг. Точна вартість лікування 
-          визначається лікарем після огляду та складання індивідуального плану.
+      {/* Page Header (Option A: Centered typographic) */}
+      <div className="max-w-3xl mx-auto text-center mb-16 pb-8 border-b border-border">
+        <span className="text-primary font-semibold tracking-wider text-xs uppercase mb-3 block">
+          Вартість послуг
+        </span>
+        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground mb-4">
+          Прозорі ціни без прихованих платежів
+        </h1>
+        <p className="text-lg text-muted-foreground leading-relaxed">
+          Ми пропонуємо прозору цінову політику та високу якість послуг. Точна вартість лікування визначається лікарем після ретельного огляду та складання індивідуального плану лікування.
         </p>
       </div>
 
