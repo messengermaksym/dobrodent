@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Gallery() {
   const images = [
     "/img_9814.jpg",
@@ -32,7 +34,7 @@ export default function Gallery() {
             key={index}
             className="aspect-[4/3] bg-muted rounded-xl overflow-hidden relative group cursor-pointer border border-border"
           >
-            <img src={img} alt={`Фото клініки ${index + 1}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+            <Image src={img} alt={`Фото клініки ${index + 1}`} fill className="object-cover group-hover:scale-105 transition-transform duration-300" />
             <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors duration-300" />
           </div>
         ))}

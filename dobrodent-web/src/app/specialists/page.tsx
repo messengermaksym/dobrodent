@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Specialists() {
   const specialists = [
     {
@@ -40,7 +42,7 @@ export default function Specialists() {
         {specialists.map((person, index) => (
           <div key={index} className="bg-background rounded-2xl border border-border overflow-hidden flex flex-col">
             <div className="bg-muted aspect-square flex items-center justify-center border-b border-border relative overflow-hidden">
-              <img src={person.image} alt={person.name} className="w-full h-full object-cover" />
+              <Image src={person.image} alt={person.name} fill className="object-cover" />
             </div>
             <div className="p-6 flex flex-col flex-grow">
               <h3 className="text-xl font-bold text-foreground mb-1">{person.name}</h3>

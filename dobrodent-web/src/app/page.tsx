@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { CheckCircle2, HeartPulse, Clock, Sparkles, ArrowRight } from "lucide-react";
 import FAQSection from "@/components/FAQSection";
 
@@ -32,7 +33,7 @@ export default function Home() {
               </div>
             </div>
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg border border-border">
-              <img src="/img_9885.jpg" alt="Добродент клініка" className="w-full h-full object-cover" />
+              <Image src="/img_9885.jpg" alt="Добродент клініка" fill className="object-cover" />
             </div>
           </div>
         </div>
