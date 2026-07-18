@@ -43,9 +43,12 @@ export default function Footer() {
                 <MapPin className="w-5 h-5 shrink-0" />
                 <span>м.Мукачево<br />вул. Я. Мудрого, 55/5</span>
               </li>
-              <li className="flex items-center gap-3">
-                <Phone className="w-5 h-5 shrink-0" />
-                <span>(03131) 5-43-77<br />099 369 32 77</span>
+              <li className="flex items-start gap-3">
+                <Phone className="w-5 h-5 shrink-0 mt-0.5" />
+                <div className="flex flex-col gap-1">
+                  <a href="tel:+380313154377" className="hover:text-white transition-colors">(03131) 5-43-77</a>
+                  <a href="tel:+380993693277" className="hover:text-white transition-colors">099 369 32 77</a>
+                </div>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-5 h-5 shrink-0" />

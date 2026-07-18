@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, ShieldCheck, Stethoscope, Baby, Activity, TestTube } from "lucide-react";
+import ScrollReveal from "@/components/ScrollReveal";
+import StaggerContainer, { StaggerItem } from "@/components/StaggerContainer";
 
 const prefix = process.env.NODE_ENV === 'production' ? '/dobrodent' : '';
 
@@ -52,37 +54,41 @@ export default function Services() {
   return (
     <div className="pt-8 pb-16 sm:pt-12 sm:pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Page Header (Option A: Centered typographic) */}
-      <div className="max-w-3xl mx-auto text-center mb-16 pb-8 border-b border-border">
-        <span className="text-primary font-semibold tracking-wider text-xs uppercase mb-3 block">
-          Напрямки лікування
-        </span>
-        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground mb-4">
-          Якісна стоматологія для всієї родини
-        </h1>
-        <p className="text-lg text-muted-foreground leading-relaxed">
-          Ми пропонуємо повний спектр стоматологічних послуг з використанням сучасних технологій та матеріалів для всієї родини. Від профілактичної гігієни до складної імплантації — ми дбаємо про здоров'я та красу вашої усмішки.
-        </p>
-      </div>
+      <ScrollReveal variant="fadeUp">
+        <div className="max-w-3xl mx-auto text-center mb-16 pb-8 border-b border-border">
+          <span className="text-primary font-semibold tracking-wider text-xs uppercase mb-3 block">
+            Напрямки лікування
+          </span>
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground mb-4">
+            Якісна стоматологія для всієї родини
+          </h1>
+          <p className="text-lg text-muted-foreground leading-relaxed">
+            Ми пропонуємо повний спектр стоматологічних послуг з використанням сучасних технологій та матеріалів для всієї родини. Від профілактичної гігієни до складної імплантації — ми дбаємо про здоров&apos;я та красу вашої усмішки.
+          </p>
+        </div>
+      </ScrollReveal>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {services.map((service, index) => (
-          <div key={index} className="bg-background rounded-2xl border border-border p-8 flex flex-col hover:border-primary/50 transition-colors">
-            <div className="mb-6 bg-muted w-16 h-16 rounded-xl flex items-center justify-center">
-              {service.icon}
+          <StaggerItem key={index}>
+            <div className="bg-background rounded-2xl border border-border p-8 flex flex-col hover:border-primary/50 transition-colors h-full">
+              <div className="mb-6 bg-muted w-16 h-16 rounded-xl flex items-center justify-center">
+                {service.icon}
+              </div>
+              <h3 className="text-2xl font-bold text-foreground mb-4">{service.title}</h3>
+              <p className="text-muted-foreground mb-8 flex-grow leading-relaxed">
+                {service.description}
+              </p>
+              <Link 
+                href={`/services/${service.slug}`}
+                className="inline-flex items-center text-primary font-medium hover:underline mt-auto w-fit"
+              >
+                Читати детальніше <ArrowRight className="ml-2 w-4 h-4" />
+              </Link>
             </div>
-            <h3 className="text-2xl font-bold text-foreground mb-4">{service.title}</h3>
-            <p className="text-muted-foreground mb-8 flex-grow leading-relaxed">
-              {service.description}
-            </p>
-            <Link 
-              href={`/services/${service.slug}`}
-              className="inline-flex items-center text-primary font-medium hover:underline mt-auto w-fit"
-            >
-              Читати детальніше <ArrowRight className="ml-2 w-4 h-4" />
-            </Link>
-          </div>
+          </StaggerItem>
         ))}
-      </div>
+      </StaggerContainer>
     </div>
   );
 }

@@ -28,14 +28,14 @@ export default function Header() {
             </div>
           </div>
           <div className="flex items-center gap-4 font-medium">
-            <div className="flex items-center gap-1.5">
+            <a href="tel:+380313154377" className="flex items-center gap-1.5 hover:text-primary-foreground/80 transition-colors">
               <Phone className="w-4 h-4" />
               <span>(03131) 5-43-77</span>
-            </div>
-            <div className="flex items-center gap-1.5">
+            </a>
+            <a href="tel:+380993693277" className="flex items-center gap-1.5 hover:text-primary-foreground/80 transition-colors">
               <Phone className="w-4 h-4" />
               <span>099 369 32 77</span>
-            </div>
+            </a>
           </div>
         </div>
       </div>
