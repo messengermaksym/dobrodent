@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CheckCircle2, HeartPulse, Clock, Sparkles, ArrowRight } from "lucide-react";
+import { CheckCircle2, HeartPulse, Clock, Sparkles, ArrowRight, ShieldCheck, Stethoscope, Baby, TestTube, Activity } from "lucide-react";
 import FAQSection from "@/components/FAQSection";
 
 const prefix = process.env.NODE_ENV === 'production' ? '/dobrodent' : '';
@@ -34,7 +34,7 @@ export default function Home() {
               </div>
             </div>
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg border border-border">
-              <img src={`${prefix}/img_9885.jpg`} alt="Добродент клініка" className="w-full h-full object-cover" />
+              <img fetchPriority="high" src={`${prefix}/img_9885.jpg`} alt="Добродент клініка" className="w-full h-full object-cover" />
             </div>
           </div>
         </div>
@@ -58,7 +58,7 @@ export default function Home() {
                 Ми використовуємо тільки новітнє обладнання для точної діагностики та безболісного лікування.
               </p>
             </div>
-            
+
             <div className="bg-muted p-8 rounded-xl border border-border">
               <Clock className="w-10 h-10 text-primary mb-4" />
               <h3 className="text-lg font-bold mb-2">Економія часу</h3>
@@ -103,17 +103,53 @@ export default function Home() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              "Професійна гігієна та профілактика",
-              "Лікування зубів",
-              "Дитяча та доросла ортодонтія",
-              "Імплантація зубів",
-              "Протезування зубів",
-              "Зубозберігаючі технології"
+              {
+                title: "Професійна гігієна та профілактика",
+                slug: "hygiene",
+                desc: "Професійне чищення зубів (ультразвук + AirFlow), зняття каменю та профілактика захворювань ясен.",
+                icon: <ShieldCheck className="w-6 h-6 text-primary" />
+              },
+              {
+                title: "Лікування зубів",
+                slug: "treatment",
+                desc: "Безболісне лікування карієсу, художня реставрація зубів та лікування кореневих каналів.",
+                icon: <Stethoscope className="w-6 h-6 text-primary" />
+              },
+              {
+                title: "Дитяча та доросла ортодонтія",
+                slug: "orthodontics",
+                desc: "Вирівнювання зубного ряду та виправлення прикусу за допомогою сучасних брекет-систем.",
+                icon: <Baby className="w-6 h-6 text-primary" />
+              },
+              {
+                title: "Імплантація зубів",
+                slug: "implants",
+                desc: "Надійне та довговічне відновлення втрачених зубів за допомогою титанових імплантатів.",
+                icon: <Activity className="w-6 h-6 text-primary" />
+              },
+              {
+                title: "Протезування зубів",
+                slug: "prosthetics",
+                desc: "Встановлення коронок, вінірів, мостоподібних конструкцій та знімних протезів.",
+                icon: <TestTube className="w-6 h-6 text-primary" />
+              },
+              {
+                title: "Зубозберігаючі технології",
+                slug: "surgery",
+                desc: "Зубозберігаючі операції (резекція верхівки, гемісекція кореня) та безболісне видалення зубів.",
+                icon: <ShieldCheck className="w-6 h-6 text-primary" />
+              }
             ].map((service, i) => (
-              <Link href="/services" key={i} className="group bg-background p-6 rounded-xl border border-border hover:shadow-md transition-all">
-                <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">{service}</h3>
-                <span className="inline-flex items-center text-sm text-primary font-medium">
-                  Детальніше <ArrowRight className="ml-1 w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+              <Link href={`/services/${service.slug}`} key={i} className="group bg-background p-8 rounded-2xl border border-border hover:border-primary/40 hover:shadow-md transition-all flex flex-col justify-between">
+                <div>
+                  <div className="mb-5 bg-muted w-12 h-12 rounded-xl flex items-center justify-center group-hover:bg-primary/5 transition-colors">
+                    {service.icon}
+                  </div>
+                  <h3 className="text-xl font-bold mb-3 text-foreground group-hover:text-primary transition-colors">{service.title}</h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed mb-6">{service.desc}</p>
+                </div>
+                <span className="inline-flex items-center text-sm text-primary font-semibold">
+                  Читати більше <ArrowRight className="ml-1.5 w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </span>
               </Link>
             ))}
@@ -139,7 +175,7 @@ export default function Home() {
       <section className="py-16 sm:py-24 bg-muted border-t border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            
+
             {/* Contact & Map Text */}
             <div className="lg:col-span-5 space-y-6">
               <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
@@ -148,7 +184,7 @@ export default function Home() {
               <p className="text-lg text-muted-foreground leading-relaxed">
                 Наша клініка розташована у самому центрі міста Мукачево. До нас зручно дістатися як на власному автомобілі, так і громадським транспортом.
               </p>
-              
+
               <div className="space-y-4 text-foreground/90">
                 <div className="flex items-start gap-3">
                   <div className="mt-1 bg-background p-2 rounded-full border border-border text-primary">
@@ -190,9 +226,9 @@ export default function Home() {
               </div>
 
               <div className="pt-4">
-                <a 
-                  href="https://maps.app.goo.gl/KshX2U1ah3r2Qmsh7" 
-                  target="_blank" 
+                <a
+                  href="https://maps.app.goo.gl/KshX2U1ah3r2Qmsh7"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-primary-foreground bg-primary hover:bg-primary/90 transition-colors shadow-sm"
                 >
@@ -203,13 +239,13 @@ export default function Home() {
 
             {/* Embedded Google Map */}
             <div className="lg:col-span-7 h-[450px] relative w-full">
-              <iframe 
-                src="https://maps.google.com/maps?q=Мукачево,%20Ярослава%20Мудрого%2055&t=&z=16&ie=UTF8&iwloc=&output=embed" 
-                width="100%" 
-                height="100%" 
-                style={{ border: 0 }} 
-                allowFullScreen={true} 
-                loading="lazy" 
+              <iframe
+                src="https://maps.google.com/maps?q=Мукачево,%20Ярослава%20Мудрого%2055&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen={true}
+                loading="lazy"
                 className="rounded-2xl border border-border shadow-md"
               ></iframe>
             </div>

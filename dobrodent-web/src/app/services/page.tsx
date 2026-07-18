@@ -36,6 +36,12 @@ export default function Services() {
       icon: <TestTube className="w-8 h-8 text-primary" />
     },
     {
+      title: "Зубозберігаючі технології",
+      description: "Сучасні зубозберігаючі операції (резекція верхівки кореня, гемісекція) та безболісне і безпечне видалення зубів.",
+      slug: "surgery",
+      icon: <ShieldCheck className="w-8 h-8 text-primary" />
+    },
+    {
       title: "Рентгенологія",
       description: "Точна діагностика стану зубів та щелеп за допомогою сучасного безпечного рентгенологічного обладнання.",
       slug: "xray",
@@ -68,18 +74,12 @@ export default function Services() {
             <p className="text-muted-foreground mb-8 flex-grow leading-relaxed">
               {service.description}
             </p>
-            {service.slug === 'hygiene' ? (
-              <Link 
-                href={`/services/${service.slug}`}
-                className="inline-flex items-center text-primary font-medium hover:underline mt-auto w-fit"
-              >
-                Читати детальніше <ArrowRight className="ml-2 w-4 h-4" />
-              </Link>
-            ) : (
-              <div className="inline-flex items-center text-muted-foreground text-sm font-medium mt-auto w-fit">
-                Детальна інформація в клініці
-              </div>
-            )}
+            <Link 
+              href={`/services/${service.slug}`}
+              className="inline-flex items-center text-primary font-medium hover:underline mt-auto w-fit"
+            >
+              Читати детальніше <ArrowRight className="ml-2 w-4 h-4" />
+            </Link>
           </div>
         ))}
       </div>
