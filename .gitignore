@@ -1,0 +1,6 @@
+# Agents configuration and skills
+.agents/
+skills-lock.json
+
+# Original website backups and example files
+original_examples/
