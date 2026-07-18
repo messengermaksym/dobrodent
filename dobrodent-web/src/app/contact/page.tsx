@@ -1,8 +1,60 @@
+"use client";
+
+import { useState } from "react";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 
 const prefix = process.env.NODE_ENV === 'production' ? '/dobrodent' : '';
 
 export default function Contact() {
+  const [phone, setPhone] = useState("");
+
+  const formatPhone = (value: string) => {
+    let digits = value.replace(/\D/g, '');
+    if (digits.startsWith('38')) {
+      digits = digits.substring(2);
+    }
+    digits = digits.substring(0, 10);
+
+    let formatted = '+38 (';
+    if (digits.length > 0) {
+      formatted += digits.substring(0, 3);
+    }
+    if (digits.length > 3) {
+      formatted += ') ' + digits.substring(3, 6);
+    }
+    if (digits.length > 6) {
+      formatted += '-' + digits.substring(6, 8);
+    }
+    if (digits.length > 8) {
+      formatted += '-' + digits.substring(8, 10);
+    }
+    return formatted;
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input = e.target.value;
+    
+    if (!input) {
+      setPhone('');
+      return;
+    }
+
+    const digits = input.replace(/\D/g, '');
+    if (digits === '' || digits === '3' || digits === '38') {
+      if (input.length < phone.length) {
+        setPhone('');
+        return;
+      }
+    }
+
+    setPhone(formatPhone(input));
+  };
+
+  const handlePhoneFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (!e.target.value) {
+      setPhone('+38 (');
+    }
+  };
   return (
     <div className="pt-8 pb-16 sm:pt-12 sm:pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Page Header (Option A: Centered typographic) */}
@@ -100,6 +152,9 @@ export default function Contact() {
                   name="phone"
                   className="w-full px-4 py-3 rounded-md border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 transition-shadow"
                   placeholder="+38 (099) 000-00-00"
+                  value={phone}
+                  onChange={handlePhoneChange}
+                  onFocus={handlePhoneFocus}
                   required
                 />
               </div>
