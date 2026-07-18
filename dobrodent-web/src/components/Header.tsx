@@ -36,10 +36,10 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center">
           <div className="flex-shrink-0 flex items-center">
-            <Link href="/" className="flex items-center gap-3">
-              <img src={`${prefix}/logo.png`} alt="Добродент" className="h-10 w-auto object-contain" />
-              <span className="text-xl font-bold text-primary tracking-tight hidden sm:block">
-                Добродент
+            <Link href="/" className="flex items-center">
+              <img src={`${prefix}/logo_d_icon.png`} alt="Добродент" className="h-12 w-auto object-contain" />
+              <span className="text-4xl font-bold text-primary tracking-tight hidden sm:block -ml-2.5">
+                OBRODENT
               </span>
             </Link>
           </div>

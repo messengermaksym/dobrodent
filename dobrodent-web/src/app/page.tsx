@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CheckCircle2, HeartPulse, Clock, Sparkles, ArrowRight, ShieldCheck, Stethoscope, Baby, TestTube, Activity } from "lucide-react";
 import FAQSection from "@/components/FAQSection";
+import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
 
 const prefix = process.env.NODE_ENV === 'production' ? '/dobrodent' : '';
 
@@ -34,7 +35,7 @@ export default function Home() {
               </div>
             </div>
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg border border-border">
-              <img fetchPriority="high" src={`${prefix}/img_9885.jpg`} alt="Добродент клініка" className="w-full h-full object-cover" />
+              <ImageWithPlaceholder fetchPriority="high" src={`${prefix}/img_9885.jpg`} alt="Добродент клініка" className="w-full h-full object-cover" />
             </div>
           </div>
         </div>

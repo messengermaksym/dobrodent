@@ -1,3 +1,5 @@
+import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
+
 const prefix = process.env.NODE_ENV === 'production' ? '/dobrodent' : '';
 
 export default function Gallery() {
@@ -5,17 +7,13 @@ export default function Gallery() {
     "/img_9814.jpg",
     "/img_9824.jpg",
     "/img_9885.jpg",
-
     "/img_1439_1.jpg",
     "/img_1444_2.jpg",
-
-
-
     "/img_9854.jpg",
     "/img_9847.jpg",
     "/img_9917.jpg",
     "/img_1437_1.jpg",
-
+    "/non-existent-image.jpg",
   ];
 
   return (
@@ -39,7 +37,7 @@ export default function Gallery() {
             key={index}
             className="aspect-[4/3] bg-muted rounded-xl overflow-hidden relative group cursor-pointer border border-border"
           >
-            <img src={`${prefix}${img}`} alt={`Фото клініки ${index + 1}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+            <ImageWithPlaceholder src={`${prefix}${img}`} alt={`Фото клініки ${index + 1}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
             <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors duration-300" />
           </div>
         ))}
