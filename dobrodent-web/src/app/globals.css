@@ -3,11 +3,11 @@
 :root {
   --background: #ffffff;
   --foreground: #1a1d20;
-  --primary: #32373c;
+  --primary: #6e2c24;
   --primary-foreground: #ffffff;
-  --muted: #f8f9fa;
-  --muted-foreground: #6c757d;
-  --border: #e9ecef;
+  --muted: #fdfaf9;
+  --muted-foreground: #7d6b69;
+  --border: #f1e5e4;
 }
 
 @theme inline {
