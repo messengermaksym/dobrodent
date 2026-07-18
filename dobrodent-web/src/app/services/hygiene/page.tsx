@@ -3,7 +3,7 @@ import { CheckCircle2, Info, ArrowLeft, Droplets, Smile, ShieldAlert } from "luc
 
 export default function HygieneService() {
   return (
-    <div className="py-16 sm:py-24 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="pt-8 pb-16 sm:pt-12 sm:pb-24 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <Link href="/services" className="inline-flex items-center text-muted-foreground hover:text-primary mb-8 transition-colors">
         <ArrowLeft className="w-4 h-4 mr-2" /> Повернутися до послуг

@@ -1,32 +1,38 @@
 import Link from "next/link";
 import { CheckCircle2, HeartPulse, Clock, Sparkles, ArrowRight } from "lucide-react";
+import FAQSection from "@/components/FAQSection";
 
 export default function Home() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative bg-muted py-20 sm:py-32 overflow-hidden">
+      <section className="relative bg-muted pt-10 pb-20 sm:pt-16 sm:pb-32 overflow-hidden border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-2xl">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-6">
-              Клініка нового покоління
-            </h1>
-            <p className="text-lg sm:text-xl text-foreground/80 mb-8 leading-relaxed">
-              Сучасна техніка, кваліфікований персонал та індивідуальний підхід до кожного пацієнта. Довірте свою усмішку професіоналам.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                href="/contact"
-                className="inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-primary-foreground bg-primary hover:bg-primary/90 transition-colors shadow-sm"
-              >
-                Записатися на прийом
-              </Link>
-              <Link
-                href="/services"
-                className="inline-flex justify-center items-center px-6 py-3 border border-border text-base font-medium rounded-md text-foreground bg-background hover:bg-muted transition-colors shadow-sm"
-              >
-                Наші послуги
-              </Link>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="max-w-2xl">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-6">
+                Клініка нового покоління
+              </h1>
+              <p className="text-lg sm:text-xl text-foreground/80 mb-8 leading-relaxed">
+                Сучасна техніка, кваліфікований персонал та індивідуальний підхід до кожного пацієнта. Довірте свою усмішку професіоналам.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link
+                  href="/contact"
+                  className="inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-primary-foreground bg-primary hover:bg-primary/90 transition-colors shadow-sm"
+                >
+                  Записатися на прийом
+                </Link>
+                <Link
+                  href="/services"
+                  className="inline-flex justify-center items-center px-6 py-3 border border-border text-base font-medium rounded-md text-foreground bg-background hover:bg-muted transition-colors shadow-sm"
+                >
+                  Наші послуги
+                </Link>
+              </div>
+            </div>
+            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg border border-border">
+              <img src="/img_9885.jpg" alt="Добродент клініка" className="w-full h-full object-cover" />
             </div>
           </div>
         </div>
@@ -109,6 +115,103 @@ export default function Home() {
                 </span>
               </Link>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-16 sm:py-24 bg-background">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl mb-4">Часті запитання (FAQ)</h2>
+            <p className="text-lg text-muted-foreground">
+              Відповіді на найпопулярніші запитання наших пацієнтів.
+            </p>
+          </div>
+
+          <FAQSection />
+        </div>
+      </section>
+
+      {/* Location Section */}
+      <section className="py-16 sm:py-24 bg-muted border-t border-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            {/* Contact & Map Text */}
+            <div className="lg:col-span-5 space-y-6">
+              <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                Де ми знаходимось?
+              </h2>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                Наша клініка розташована у самому центрі міста Мукачево. До нас зручно дістатися як на власному автомобілі, так і громадським транспортом.
+              </p>
+              
+              <div className="space-y-4 text-foreground/90">
+                <div className="flex items-start gap-3">
+                  <div className="mt-1 bg-background p-2 rounded-full border border-border text-primary">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong className="block text-foreground">Адреса:</strong>
+                    <span>м. Мукачево, вул. Ярослава Мудрого, 55/5</span>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="mt-1 bg-background p-2 rounded-full border border-border text-primary">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong className="block text-foreground">Телефони:</strong>
+                    <span className="block">(03131) 5-43-77</span>
+                    <span className="block">099 369 32 77</span>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="mt-1 bg-background p-2 rounded-full border border-border text-primary">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong className="block text-foreground">Графік роботи:</strong>
+                    <span>Понеділок - П'ятниця: 9:00 - 18:00</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-4">
+                <a 
+                  href="https://maps.app.goo.gl/KshX2U1ah3r2Qmsh7" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-primary-foreground bg-primary hover:bg-primary/90 transition-colors shadow-sm"
+                >
+                  Відкрити на картах Google
+                </a>
+              </div>
+            </div>
+
+            {/* Embedded Google Map */}
+            <div className="lg:col-span-7 h-[450px] relative w-full">
+              <iframe 
+                src="https://maps.google.com/maps?q=Мукачево,%20Ярослава%20Мудрого%2055&t=&z=16&ie=UTF8&iwloc=&output=embed" 
+                width="100%" 
+                height="100%" 
+                style={{ border: 0 }} 
+                allowFullScreen={true} 
+                loading="lazy" 
+                className="rounded-2xl border border-border shadow-md"
+              ></iframe>
+            </div>
+
           </div>
         </div>
       </section>
