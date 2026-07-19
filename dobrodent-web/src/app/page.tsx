@@ -12,10 +12,18 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative bg-muted pt-10 pb-20 sm:pt-16 sm:pb-32 overflow-hidden border-b border-border">
+      <section className="relative bg-muted pt-8 pb-16 sm:pt-16 sm:pb-32 overflow-hidden border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <ScrollReveal variant="fadeUp">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-12 items-center">
+            {/* Photo Column - First in DOM to appear on top on mobile */}
+            <ScrollReveal variant="fadeIn" delay={0.2} className="lg:order-2">
+              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg border border-border">
+                <ImageWithPlaceholder fetchPriority="high" src={`${prefix}/img_9885.jpg`} alt="Добродент клініка" className="w-full h-full object-cover" />
+              </div>
+            </ScrollReveal>
+
+            {/* Text Column - Second in DOM, ordered first on desktop */}
+            <ScrollReveal variant="fadeUp" className="lg:order-1">
               <div className="max-w-2xl">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-6">
                   Клініка нового покоління
@@ -39,9 +47,36 @@ export default function Home() {
                 </div>
               </div>
             </ScrollReveal>
-            <ScrollReveal variant="fadeIn" delay={0.2}>
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg border border-border">
-                <ImageWithPlaceholder fetchPriority="high" src={`${prefix}/img_9885.jpg`} alt="Добродент клініка" className="w-full h-full object-cover" />
+          </div>
+        </div>
+      </section>
+
+      {/* About Us Section */}
+      <section className="py-16 sm:py-24 bg-background border-b border-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <ScrollReveal variant="fadeUp">
+              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-md border border-border">
+                <ImageWithPlaceholder src={`${prefix}/img_9814.jpg`} alt="Медичний стоматологічний центр Добродент" className="w-full h-full object-cover" />
+              </div>
+            </ScrollReveal>
+
+            <ScrollReveal variant="fadeUp" delay={0.15}>
+              <div className="space-y-6">
+                <span className="text-primary font-semibold tracking-wider text-xs uppercase block">
+                  Про клініку
+                </span>
+                <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                  Раді вітати вас у медичному стоматологічному центрі «ДОБРОДЕНТ»
+                </h2>
+                <div className="space-y-4 text-muted-foreground leading-relaxed">
+                  <p>
+                    Наша клініка працює з 2011 року в одному із затишних двориків старого центру міста Мукачево. За роки роботи професіоналізм закладу та його лікарів уже встигли оцінити тисячі жителів та гостей нашого краю.
+                  </p>
+                  <p>
+                    Здорова чарівна посмішка завжди вважалась запорукою міцного здоров’я та впевненості у собі. І хоча далеко не всі мають природну красу зубів, наші лікарі-стоматологи допоможуть повернути втрачене чи скорегувати наявне. Пам&apos;ятайте, що зробити свою посмішку привабливішою ніколи не пізно!
+                  </p>
+                </div>
               </div>
             </ScrollReveal>
           </div>
