@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 interface ImageWithPlaceholderProps {
   src: string;
@@ -18,6 +18,13 @@ export default function ImageWithPlaceholder({
   fetchPriority = "auto"
 }: ImageWithPlaceholderProps) {
   const [isLoaded, setIsLoaded] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    if (imgRef.current && imgRef.current.complete) {
+      setIsLoaded(true);
+    }
+  }, [src]);
 
   return (
     <div className="relative w-full h-full overflow-hidden bg-muted">
@@ -39,6 +46,7 @@ export default function ImageWithPlaceholder({
 
       {/* Main Image */}
       <img
+        ref={imgRef}
         src={src}
         alt={alt}
         fetchPriority={fetchPriority}

@@ -41,7 +41,12 @@ export default function Gallery() {
             <div
               className="aspect-[4/3] bg-muted rounded-xl overflow-hidden relative group cursor-pointer border border-border"
             >
-              <ImageWithPlaceholder src={`${prefix}${img}`} alt={`Фото клініки ${index + 1}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+              <ImageWithPlaceholder
+                src={`${prefix}${img}`}
+                alt={`Фото клініки ${index + 1}`}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                fetchPriority={index < 3 ? "high" : "auto"}
+              />
               <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors duration-300" />
             </div>
           </StaggerItem>
