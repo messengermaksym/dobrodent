@@ -6,6 +6,7 @@ import ScrollReveal from "@/components/ScrollReveal";
 import StaggerContainer from "@/components/StaggerContainer";
 import { StaggerItem } from "@/components/StaggerContainer";
 import BookingButton from "@/components/BookingButton";
+import ReviewsSection from "@/components/ReviewsSection";
 
 const prefix = process.env.NODE_ENV === 'production' ? '/dobrodent' : '';
 
@@ -213,6 +214,9 @@ export default function Home() {
           </StaggerContainer>
         </div>
       </section>
+
+      {/* Reviews Section */}
+      <ReviewsSection />
 
       {/* FAQ Section */}
       <section className="py-16 sm:py-24 bg-background">

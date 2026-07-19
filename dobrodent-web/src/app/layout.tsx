@@ -60,12 +60,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="uk" className={`${inter.variable} ${montserrat.variable} h-full antialiased overflow-x-hidden`}>
-      <body className="min-h-full flex flex-col font-sans overflow-x-hidden">
+    <html lang="uk" className={`${inter.variable} ${montserrat.variable} h-full antialiased`}>
+      <body className="min-h-full flex flex-col font-sans">
         <BookingModalProvider>
-          <div className="flex flex-col min-h-screen w-full overflow-x-hidden relative">
+          <div className="flex flex-col min-h-screen w-full relative">
             <Header />
-            <main className="flex-grow">{children}</main>
+            <main className="flex-grow overflow-x-hidden relative w-full">{children}</main>
             <Footer />
           </div>
         </BookingModalProvider>
