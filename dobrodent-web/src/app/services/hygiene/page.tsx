@@ -1,7 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle2, Info, ArrowLeft, Droplets, Smile, ShieldAlert } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import StaggerContainer, { StaggerItem } from "@/components/StaggerContainer";
+
+export const metadata: Metadata = {
+  title: "Професійна гігієна та профілактика зубів",
+  description: "Послуги професійної гігієни та профілактики ротової порожнини в клініці Добродент. Ультразвукова чистка, зняття зубного нальоту за технологією AirFlow та захист від карієсу.",
+};
 
 export default function HygieneService() {
   return (

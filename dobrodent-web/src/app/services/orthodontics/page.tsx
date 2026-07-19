@@ -1,7 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle2, Info, ArrowLeft, ShieldAlert, Sparkles, Smile } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import StaggerContainer, { StaggerItem } from "@/components/StaggerContainer";
+
+export const metadata: Metadata = {
+  title: "Ортодонтія: Брекети та вирівнювання зубів",
+  description: "Дитяча та доросла ортодонтія в стоматології Добродент у Мукачеві. Вирівнювання зубів, виправлення прикусу за допомогою сучасних брекет-систем та елайнерів.",
+};
 
 export default function OrthodonticsService() {
   return (

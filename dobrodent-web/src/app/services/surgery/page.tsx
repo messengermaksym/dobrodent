@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle2, Info, ArrowLeft, ShieldAlert, HeartPulse, Sparkles } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
+
+export const metadata: Metadata = {
+  title: "Хірургічна стоматологія",
+  description: "Хірургічне лікування зубів у клініці Добродент у Мукачеві. Безболісне видалення зубів будь-якої складності (включаючи зуби мудрості), пластика вуздечки та підготовка до імплантації.",
+};
 
 export default function SurgeryService() {
   return (

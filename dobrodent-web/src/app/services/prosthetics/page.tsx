@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle2, Info, ArrowLeft, HeartPulse, Sparkles, Smile } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
+
+export const metadata: Metadata = {
+  title: "Протезування зубів",
+  description: "Ортопедична стоматологія (протезування) в клініці Добродент у Мукачеві. Встановлення коронок, вінірів, мостоподібних та знімних протезів для відновлення естетики та функцій зубів.",
+};
 
 export default function ProstheticsService() {
   return (

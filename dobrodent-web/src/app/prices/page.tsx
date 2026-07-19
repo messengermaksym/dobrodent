@@ -1,8 +1,14 @@
+import type { Metadata } from "next";
 import { Check } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import StaggerContainer, { StaggerItem } from "@/components/StaggerContainer";
 
 const prefix = process.env.NODE_ENV === 'production' ? '/dobrodent' : '';
+
+export const metadata: Metadata = {
+  title: "Ціни на послуги",
+  description: "Ознайомтеся з прайс-листом на стоматологічні послуги в клініці Добродент. Доступні ціни на лікування зубів, чистку, імплантацію та встановлення брекетів у Мукачеві.",
+};
 
 export default function Prices() {
   const categories = [

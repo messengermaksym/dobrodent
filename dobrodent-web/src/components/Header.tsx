@@ -3,11 +3,13 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Phone, MapPin, Clock, Menu, X } from 'lucide-react';
+import { useBookingModal } from '@/context/BookingModalContext';
 
 const prefix = process.env.NODE_ENV === 'production' ? '/dobrodent' : '';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const { openModal } = useBookingModal();
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
@@ -89,9 +91,9 @@ export default function Header() {
 
           {/* CTA Button (Hidden on tablets, visible from laptop screen sizes) */}
           <div className="hidden lg:flex items-center">
-            <Link href="/contact" className="bg-primary text-primary-foreground hover:bg-primary/90 px-4 xl:px-5 py-2.5 rounded-md text-sm font-medium transition-colors">
+            <button onClick={openModal} className="bg-primary text-primary-foreground hover:bg-primary/90 px-4 xl:px-5 py-2.5 rounded-md text-sm font-medium transition-colors cursor-pointer">
               Записатись на прийом
-            </Link>
+            </button>
           </div>
 
           {/* Mobile menu button */}
@@ -155,13 +157,15 @@ export default function Header() {
               Контакти
             </Link>
             <div className="pt-4 pb-2 px-3">
-              <Link
-                href="/contact"
-                onClick={closeMenu}
-                className="block text-center bg-primary text-primary-foreground hover:bg-primary/90 px-5 py-3 rounded-md text-base font-medium transition-colors shadow-sm"
+              <button
+                onClick={() => {
+                  closeMenu();
+                  openModal();
+                }}
+                className="w-full text-center bg-primary text-primary-foreground hover:bg-primary/90 px-5 py-3 rounded-md text-base font-medium transition-colors shadow-sm cursor-pointer"
               >
                 Записатись на прийом
-              </Link>
+              </button>
             </div>
           </div>
         </div>

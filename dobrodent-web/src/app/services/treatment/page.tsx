@@ -1,7 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle2, Info, ArrowLeft, HeartPulse, Stethoscope, Sparkles } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import StaggerContainer, { StaggerItem } from "@/components/StaggerContainer";
+
+export const metadata: Metadata = {
+  title: "Лікування зубів: Терапевтична стоматологія",
+  description: "Сучасне лікування карієсу, пульпіту та періодонтиту в клініці Добродент у Мукачеві. Використання фотополімерних пломб, лікування кореневих каналів під контролем рентгену.",
+};
 
 export default function TreatmentService() {
   return (

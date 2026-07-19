@@ -5,6 +5,7 @@ import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
 import ScrollReveal from "@/components/ScrollReveal";
 import StaggerContainer from "@/components/StaggerContainer";
 import { StaggerItem } from "@/components/StaggerContainer";
+import BookingButton from "@/components/BookingButton";
 
 const prefix = process.env.NODE_ENV === 'production' ? '/dobrodent' : '';
 
@@ -32,12 +33,11 @@ export default function Home() {
                   Сучасна техніка, кваліфікований персонал та індивідуальний підхід до кожного пацієнта. Довірте свою усмішку професіоналам.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Link
-                    href="/contact"
-                    className="inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-primary-foreground bg-primary hover:bg-primary/90 transition-colors shadow-sm"
+                  <BookingButton
+                    className="inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-primary-foreground bg-primary hover:bg-primary/90 transition-colors shadow-sm cursor-pointer"
                   >
                     Записатися на прийом
-                  </Link>
+                  </BookingButton>
                   <Link
                     href="/services"
                     className="inline-flex justify-center items-center px-6 py-3 border border-border text-base font-medium rounded-md text-foreground bg-background hover:bg-muted transition-colors shadow-sm"

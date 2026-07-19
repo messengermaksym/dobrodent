@@ -1,8 +1,14 @@
+import type { Metadata } from "next";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
 import ScrollReveal from "@/components/ScrollReveal";
 import StaggerContainer, { StaggerItem } from "@/components/StaggerContainer";
 
 const prefix = process.env.NODE_ENV === 'production' ? '/dobrodent' : '';
+
+export const metadata: Metadata = {
+  title: "Наші спеціалісти",
+  description: "Познайомтеся з командою професійних лікарів-стоматологів клініки Добродент. Висока кваліфікація, багаторічний досвід та індивідуальний підхід до кожного пацієнта.",
+};
 
 export default function Specialists() {
   const specialists = [

@@ -1,7 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle2, Info, ArrowLeft, ShieldAlert, HeartPulse, Stethoscope } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import StaggerContainer, { StaggerItem } from "@/components/StaggerContainer";
+
+export const metadata: Metadata = {
+  title: "Імплантація зубів",
+  description: "Послуги професійної імплантації зубів у клініці Добродент у Мукачеві. Якісні імпланти від провідних виробників, досвідчені хірурги та безболісне відновлення зубного ряду.",
+};
 
 export default function ImplantsService() {
   return (

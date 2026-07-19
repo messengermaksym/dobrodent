@@ -1,0 +1,11 @@
+{
+  "css.lint.unknownAtRules": "ignore",
+  "search.exclude": {
+    "**/out": true,
+    "**/.next": true
+  },
+  "files.exclude": {
+    "**/out": true,
+    "**/.next": true
+  }
+}

@@ -1,9 +1,15 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, ShieldCheck, Stethoscope, Baby, Activity, TestTube } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import StaggerContainer, { StaggerItem } from "@/components/StaggerContainer";
 
 const prefix = process.env.NODE_ENV === 'production' ? '/dobrodent' : '';
+
+export const metadata: Metadata = {
+  title: "Послуги стоматології",
+  description: "Повний спектр стоматологічних послуг у клініці Добродент у Мукачеві: лікування карієсу, протезування, імплантація зубів, професійна чистка, ортодонтія та рентген-діагностика.",
+};
 
 export default function Services() {
   const services = [

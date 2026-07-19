@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle2, Info, ArrowLeft, HeartPulse, ShieldCheck } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
+
+export const metadata: Metadata = {
+  title: "Рентгенологія та комп'ютерна діагностика",
+  description: "Рентген-діагностика зубів у Мукачеві в стоматологічному центрі Добродент. Високоточні цифрові прицільні знімки з мінімальним променевим навантаженням.",
+};
 
 export default function XrayService() {
   return (

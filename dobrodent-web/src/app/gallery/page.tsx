@@ -1,8 +1,14 @@
+import type { Metadata } from "next";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
 import ScrollReveal from "@/components/ScrollReveal";
 import StaggerContainer, { StaggerItem } from "@/components/StaggerContainer";
 
 const prefix = process.env.NODE_ENV === 'production' ? '/dobrodent' : '';
+
+export const metadata: Metadata = {
+  title: "Фотогалерея",
+  description: "Фотогалерея стоматологічного центру Добродент у Мукачеві. Фотографії нашої клініки, сучасного стоматологічного обладнання та кабінетів лікування.",
+};
 
 export default function Gallery() {
   const images = [
