@@ -68,7 +68,7 @@ export default function Home() {
                   Про клініку
                 </span>
                 <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-                  Раді вітати вас у медичному стоматологічному центрі «ДОБРОДЕНТ»
+                  Раді вітати вас у медичному стоматологічному центрі <span className="text-primary">«ДОБРОДЕНТ»</span>
                 </h2>
                 <div className="space-y-4 text-muted-foreground leading-relaxed">
                   <p>
