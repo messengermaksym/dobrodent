@@ -16,19 +16,19 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative bg-muted pt-8 pb-16 sm:pt-16 sm:pb-32 overflow-hidden border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-12 items-center">
-            {/* Photo Column - First in DOM to appear on top on mobile */}
-            <ScrollReveal variant="fadeIn" delay={0.2} className="lg:order-2">
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg border border-border">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-12 items-center">
+            <ScrollReveal variant="fadeIn" delay={0.2} className="lg:order-2 -mx-4 -mt-8 sm:m-0">
+              <div className="relative aspect-[4/3] rounded-none sm:rounded-2xl overflow-hidden border-0 sm:border sm:border-border">
                 <ImageWithPlaceholder fetchPriority="high" src={`${prefix}/img_9885.jpg`} alt="Добродент клініка" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 pointer-events-none sm:hidden" style={{ background: "linear-gradient(to bottom, transparent, rgba(248, 249, 250, 0.5) 50%, #f8f9fa 100%)" }} />
               </div>
             </ScrollReveal>
 
             {/* Text Column - Second in DOM, ordered first on desktop */}
             <ScrollReveal variant="fadeUp" className="lg:order-1">
               <div className="max-w-2xl">
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-6">
-                  Клініка нового покоління
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-primary mb-6" style={{ fontFamily: "var(--font-cormorant-garamond), serif" }}>
+                  <span className="text-foreground">Клініка</span> нового покоління
                 </h1>
                 <p className="text-lg sm:text-xl text-foreground/80 mb-8 leading-relaxed">
                   Сучасна техніка, кваліфікований персонал та індивідуальний підхід до кожного пацієнта. Довірте свою усмішку професіоналам.
@@ -52,13 +52,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* About Us Section */}
-      <section className="py-16 sm:py-24 bg-background border-b border-border">
+      <section className="pt-0 pb-16 sm:py-24 bg-background border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <ScrollReveal variant="fadeUp">
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-md border border-border">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-12 items-center">
+            <ScrollReveal variant="fadeUp" className="-mx-4 sm:m-0">
+              <div className="relative aspect-[4/3] rounded-none sm:rounded-2xl overflow-hidden border-0 sm:border sm:border-border">
                 <ImageWithPlaceholder src={`${prefix}/img_9814.jpg`} alt="Медичний стоматологічний центр Добродент" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 pointer-events-none sm:hidden" style={{ background: "linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.5) 50%, #ffffff 100%)" }} />
               </div>
             </ScrollReveal>
 
