@@ -28,10 +28,10 @@ export default function Home() {
             <ScrollReveal variant="fadeUp" className="lg:order-1">
               <div className="max-w-2xl">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-primary mb-6" style={{ fontFamily: "var(--font-cormorant-garamond), serif" }}>
-                  <span className="text-foreground">Клініка</span> нового покоління
+                  <span className="text-foreground">Ваша ідеальна усмішка</span> починається тут
                 </h1>
                 <p className="text-lg sm:text-xl text-foreground/80 mb-8 leading-relaxed">
-                  Сучасна техніка, кваліфікований персонал та індивідуальний підхід до кожного пацієнта. Довірте свою усмішку професіоналам.
+                  Зробити свою усмішку привабливішою ніколи не пізно. Пропонуємо безболісне лікування, професійну турботу та комфорт, де цінують ваш час.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <BookingButton

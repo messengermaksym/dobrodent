@@ -57,10 +57,10 @@ export default function Header() {
               {/* Responsive logo_transparent.png (larger icon) and ДоброДЕНТ with subtitle */}
               <img src={`${prefix}/logo_transparent.png`} alt="Добродент" className="h-14 md:h-16 lg:h-18 w-auto object-contain" />
               <div className="flex flex-col justify-center -ml-1.5 md:-ml-2.5">
-                <span className="text-xl md:text-2xl lg:text-3xl font-bold text-primary tracking-tight leading-none">
+                <span className="text-xl md:text-2xl lg:text-3xl font-bold text-primary tracking-tight leading-none font-heading">
                   Добро<span className="font-medium">ДЕНТ</span>
                 </span>
-                <span className="text-[7px] md:text-[9px] lg:text-[10px] text-muted-foreground uppercase tracking-widest mt-1 leading-none font-semibold block">
+                <span className="text-[7px] md:text-[9px] lg:text-[10px] text-muted-foreground uppercase tracking-widest mt-1 leading-none font-semibold block font-heading">
                   стоматологічний центр
                 </span>
               </div>
