@@ -67,37 +67,35 @@ export default function Header() {
             </Link>
           </div>
 
-          {/* Desktop Nav (optimized for tablets) */}
-          <nav className="hidden md:flex md:space-x-2 lg:space-x-5 xl:space-x-8">
-            <Link href="/" className="text-foreground hover:text-primary px-1.5 lg:px-3 py-2 text-xs lg:text-sm font-medium transition-colors">
-              Головна
-            </Link>
-            <Link href="/specialists" className="text-foreground hover:text-primary px-1.5 lg:px-3 py-2 text-xs lg:text-sm font-medium transition-colors">
-              Спеціалісти
-            </Link>
-            <Link href="/services" className="text-foreground hover:text-primary px-1.5 lg:px-3 py-2 text-xs lg:text-sm font-medium transition-colors">
-              Послуги
-            </Link>
-            <Link href="/prices" className="text-foreground hover:text-primary px-1.5 lg:px-3 py-2 text-xs lg:text-sm font-medium transition-colors">
-              Ціни
-            </Link>
-            <Link href="/gallery" className="text-foreground hover:text-primary px-1.5 lg:px-3 py-2 text-xs lg:text-sm font-medium transition-colors">
-              Фотогалерея
-            </Link>
-            <Link href="/contact" className="text-foreground hover:text-primary px-1.5 lg:px-3 py-2 text-xs lg:text-sm font-medium transition-colors">
-              Контакти
-            </Link>
-          </nav>
-
-          {/* CTA Button (Hidden on tablets, visible from laptop screen sizes) */}
-          <div className="hidden lg:flex items-center">
-            <button onClick={openModal} className="bg-primary text-primary-foreground hover:bg-primary/90 px-4 xl:px-5 py-2.5 rounded-md text-sm font-medium transition-colors cursor-pointer">
+          {/* Desktop Nav & CTA Group (aligned to the right, visible on xl and above) */}
+          <div className="hidden xl:flex items-center xl:ml-auto xl:space-x-6">
+            <nav className="flex xl:space-x-3">
+              <Link href="/" className="text-foreground hover:text-primary px-1.5 xl:px-2 py-2 text-sm xl:text-base font-medium transition-colors">
+                Головна
+              </Link>
+              <Link href="/specialists" className="text-foreground hover:text-primary px-1.5 xl:px-2 py-2 text-sm xl:text-base font-medium transition-colors">
+                Спеціалісти
+              </Link>
+              <Link href="/services" className="text-foreground hover:text-primary px-1.5 xl:px-2 py-2 text-sm xl:text-base font-medium transition-colors">
+                Послуги
+              </Link>
+              <Link href="/prices" className="text-foreground hover:text-primary px-1.5 xl:px-2 py-2 text-sm xl:text-base font-medium transition-colors">
+                Ціни
+              </Link>
+              <Link href="/gallery" className="text-foreground hover:text-primary px-1.5 xl:px-2 py-2 text-sm xl:text-base font-medium transition-colors">
+                Фотогалерея
+              </Link>
+              <Link href="/contact" className="text-foreground hover:text-primary px-1.5 xl:px-2 py-2 text-sm xl:text-base font-medium transition-colors">
+                Контакти
+              </Link>
+            </nav>
+            <button onClick={openModal} className="bg-primary text-primary-foreground hover:bg-primary/90 px-4 xl:px-5 py-2.5 rounded-md text-sm font-medium transition-colors cursor-pointer whitespace-nowrap">
               Записатись на прийом
             </button>
           </div>
 
-          {/* Mobile menu button */}
-          <div className="flex md:hidden items-center">
+          {/* Mobile menu button (Visible on mobile and tablet) */}
+          <div className="flex xl:hidden items-center">
             <button
               type="button"
               className="text-foreground hover:text-primary p-2 transition-colors"
@@ -110,9 +108,9 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile Nav Menu Dropdown */}
+      {/* Mobile Nav Menu Dropdown (Visible on mobile and tablet) */}
       {isOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 w-full border-t border-b border-border bg-background shadow-lg animate-in slide-in-from-top-5 duration-200 z-50">
+        <div className="xl:hidden absolute top-full left-0 right-0 w-full border-t border-b border-border bg-background shadow-lg animate-in slide-in-from-top-5 duration-200 z-50">
           <div className="px-2 pt-2 pb-4 space-y-1 sm:px-3 shadow-inner">
             <Link
               href="/"

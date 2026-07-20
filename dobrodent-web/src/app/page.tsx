@@ -15,20 +15,20 @@ export default function Home() {
     <div className="flex flex-col">
       {/* Hero Section */}
       <section className="relative bg-muted pt-8 pb-16 sm:pt-16 sm:pb-32 overflow-hidden border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-16 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-12 items-center">
-            <ScrollReveal variant="fadeIn" delay={0.2} className="lg:order-2 -mx-4 -mt-8 sm:m-0">
-              <div className="relative aspect-[4/3] rounded-none sm:rounded-2xl overflow-hidden border-0 sm:border sm:border-border">
+            <ScrollReveal variant="fadeIn" delay={0.2} className="lg:order-2 -mx-4 sm:-mx-6 -mt-8 sm:-mt-16 lg:m-0">
+              <div className="relative aspect-[4/3] rounded-none lg:rounded-2xl overflow-hidden border-0 lg:border lg:border-border">
                 <ImageWithPlaceholder fetchPriority="high" src={`${prefix}/img_9885.jpg`} alt="Добродент клініка" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 pointer-events-none sm:hidden" style={{ background: "linear-gradient(to bottom, transparent, rgba(248, 249, 250, 0.5) 50%, #f8f9fa 100%)" }} />
+                <div className="absolute inset-0 pointer-events-none lg:hidden" style={{ background: "linear-gradient(to bottom, transparent, rgba(248, 249, 250, 0.5) 50%, #f8f9fa 100%)" }} />
               </div>
             </ScrollReveal>
-
+ 
             {/* Text Column - Second in DOM, ordered first on desktop */}
             <ScrollReveal variant="fadeUp" className="lg:order-1">
               <div className="max-w-2xl">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-primary mb-6" style={{ fontFamily: "var(--font-cormorant-garamond), serif" }}>
-                  <span className="text-foreground">Ваша ідеальна усмішка</span> починається тут
+                  <span className="text-foreground">Ваша ідеальна усмішка</span> <span className="whitespace-nowrap">починається тут</span>
                 </h1>
                 <p className="text-lg sm:text-xl text-foreground/80 mb-8 leading-relaxed">
                   Зробити свою усмішку привабливішою ніколи не пізно. Пропонуємо безболісне лікування, професійну турботу та комфорт, де цінують ваш час.
@@ -53,12 +53,12 @@ export default function Home() {
       </section>
 
       <section className="pt-0 pb-16 sm:py-24 bg-background border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-12 items-center">
-            <ScrollReveal variant="fadeUp" className="-mx-4 sm:m-0">
-              <div className="relative aspect-[4/3] rounded-none sm:rounded-2xl overflow-hidden border-0 sm:border sm:border-border">
+            <ScrollReveal variant="fadeUp" className="-mx-4 sm:-mx-6 sm:-mt-24 lg:m-0">
+              <div className="relative aspect-[4/3] rounded-none lg:rounded-2xl overflow-hidden border-0 lg:border lg:border-border">
                 <ImageWithPlaceholder src={`${prefix}/img_9814.jpg`} alt="Медичний стоматологічний центр Добродент" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 pointer-events-none sm:hidden" style={{ background: "linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.5) 50%, #ffffff 100%)" }} />
+                <div className="absolute inset-0 pointer-events-none lg:hidden" style={{ background: "linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.5) 50%, #ffffff 100%)" }} />
               </div>
             </ScrollReveal>
 
@@ -86,7 +86,7 @@ export default function Home() {
 
       {/* Info Blocks / Features */}
       <section className="py-16 sm:py-24 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-16">
           <ScrollReveal variant="fadeUp">
             <div className="text-center mb-16">
               <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl mb-4">Чому обирають нас</h2>
@@ -142,7 +142,7 @@ export default function Home() {
 
       {/* Services Preview */}
       <section className="py-16 sm:py-24 bg-muted border-y border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-16">
           <ScrollReveal variant="fadeUp">
             <div className="flex justify-between items-end mb-12">
               <div>
@@ -238,7 +238,7 @@ export default function Home() {
 
       {/* Location Section */}
       <section className="py-16 sm:py-24 bg-muted border-t border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-16">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
 
             {/* Contact & Map Text */}
