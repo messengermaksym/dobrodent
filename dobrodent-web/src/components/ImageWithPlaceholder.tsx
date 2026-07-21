@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { getImageUrl } from "@/lib/getImageUrl";
 
 interface ImageWithPlaceholderProps {
   src: string;
@@ -11,8 +12,6 @@ interface ImageWithPlaceholderProps {
   height?: number;
 }
 
-const prefix = process.env.NODE_ENV === 'production' ? '/dobrodent' : '';
-
 export default function ImageWithPlaceholder({
   src,
   alt,
@@ -22,9 +21,14 @@ export default function ImageWithPlaceholder({
   height
 }: ImageWithPlaceholderProps) {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [hasError, setHasError] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
 
+  const finalSrc = hasError ? getImageUrl("/doctor-placeholder.svg?v=2") : getImageUrl(src);
+
   useEffect(() => {
+    setHasError(false);
+    setIsLoaded(false);
     if (imgRef.current && imgRef.current.complete) {
       setIsLoaded(true);
     }
@@ -36,15 +40,15 @@ export default function ImageWithPlaceholder({
       {!isLoaded && (
         <div className="absolute inset-0 flex items-center justify-center bg-[#fdfaf9] z-10 transition-opacity duration-300">
           <div className="relative flex items-center justify-center">
-            {/* Spinning/pulsing soft background ring with larger radius */}
-            <div className="absolute w-28 h-28 rounded-full border-2 border-primary/20 border-t-primary animate-spin"></div>
+            {/* Spinning/pulsing soft background ring */}
+            <div className="absolute w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 border-primary/20 border-t-primary animate-spin"></div>
             {/* Pulsing logo icon */}
             <img
-              src={`${prefix}/logo-dobrodent.webp`}
+              src={getImageUrl("/logo-dobrodent.webp")}
               alt="Завантаження..."
-              width={48}
-              height={48}
-              className="w-12 h-12 object-contain animate-pulse relative z-20"
+              width={40}
+              height={40}
+              className="w-10 h-10 object-contain animate-pulse relative z-20"
             />
           </div>
         </div>
@@ -53,13 +57,17 @@ export default function ImageWithPlaceholder({
       {/* Main Image */}
       <img
         ref={imgRef}
-        src={src}
+        src={finalSrc}
         alt={alt}
         width={width}
         height={height}
         fetchPriority={fetchPriority}
         onLoad={() => setIsLoaded(true)}
-        className={`${className} transition-opacity duration-500 ease-in-out ${
+        onError={() => {
+          setHasError(true);
+          setIsLoaded(true);
+        }}
+        className={`${className} transition-opacity duration-300 ease-in-out ${
           isLoaded ? "opacity-100" : "opacity-0"
         }`}
       />

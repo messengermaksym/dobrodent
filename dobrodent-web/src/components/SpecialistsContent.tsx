@@ -7,7 +7,7 @@ import StaggerContainer, { StaggerItem } from "@/components/StaggerContainer";
 import { fetchSpecialists } from "@/lib/contentService";
 import { defaultSpecialists, Specialist } from "@/data/defaultSpecialists";
 
-const prefix = process.env.NODE_ENV === 'production' ? '/dobrodent' : '';
+import { getImageUrl } from "@/lib/getImageUrl";
 
 export default function SpecialistsContent() {
   const [specialists, setSpecialists] = useState<Specialist[]>(defaultSpecialists);
@@ -21,16 +21,6 @@ export default function SpecialistsContent() {
     }
     loadSpecialists();
   }, []);
-
-  const getImageUrl = (img?: string) => {
-    if (!img) return `${prefix}/doctor-placeholder.svg?v=2`;
-    if (img.startsWith("http") || img.startsWith("data:")) return img;
-    const url = `${prefix}${img}`;
-    if (url.includes("doctor-placeholder.svg") && !url.includes("?v=")) {
-      return `${url}?v=2`;
-    }
-    return url;
-  };
 
   return (
     <div className="pt-8 pb-16 sm:pt-12 sm:pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
