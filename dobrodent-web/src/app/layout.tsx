@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     siteName: "Добродент",
     images: [
       {
-        url: "logo_transparent.png",
+        url: "logo-dobrodent.webp",
         width: 1200,
         height: 630,
         alt: "Стоматологічна клініка Добродент",
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Добродент | Стоматологічна клініка в Мукачеві",
     description: "Сучасна стоматологічна клініка з новітнім обладнанням та кваліфікованим персоналом.",
-    images: ["logo_transparent.png"],
+    images: ["logo-dobrodent.webp"],
   },
   robots: {
     index: true,

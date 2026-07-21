@@ -19,7 +19,7 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-12 items-center">
             <ScrollReveal variant="fadeIn" delay={0.2} className="lg:order-2 -mx-4 sm:-mx-6 -mt-8 sm:-mt-16 lg:m-0">
               <div className="relative aspect-[4/3] rounded-none lg:rounded-2xl overflow-hidden border-0 lg:border lg:border-border">
-                <ImageWithPlaceholder fetchPriority="high" src={`${prefix}/img_9885.jpg`} alt="Добродент клініка" className="w-full h-full object-cover" />
+                <ImageWithPlaceholder fetchPriority="high" src={`${prefix}/dobrodent-main-banner.webp`} alt="Добродент клініка" width={1440} height={1080} className="w-full h-full object-cover" />
                 <div className="absolute inset-0 pointer-events-none lg:hidden" style={{ background: "linear-gradient(to bottom, transparent, rgba(248, 249, 250, 0.5) 50%, #f8f9fa 100%)" }} />
               </div>
             </ScrollReveal>
@@ -57,7 +57,7 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-12 items-center">
             <ScrollReveal variant="fadeUp" className="-mx-4 sm:-mx-6 sm:-mt-24 lg:m-0">
               <div className="relative aspect-[4/3] rounded-none lg:rounded-2xl overflow-hidden border-0 lg:border lg:border-border">
-                <ImageWithPlaceholder src={`${prefix}/img_9814.jpg`} alt="Медичний стоматологічний центр Добродент" className="w-full h-full object-cover" />
+                <ImageWithPlaceholder src={`${prefix}/dobrodent_clinic.webp`} alt="Медичний стоматологічний центр Добродент" width={1000} height={750} className="w-full h-full object-cover" />
                 <div className="absolute inset-0 pointer-events-none lg:hidden" style={{ background: "linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.5) 50%, #ffffff 100%)" }} />
               </div>
             </ScrollReveal>

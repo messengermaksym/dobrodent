@@ -7,6 +7,8 @@ interface ImageWithPlaceholderProps {
   alt: string;
   className?: string;
   fetchPriority?: "high" | "low" | "auto";
+  width?: number;
+  height?: number;
 }
 
 const prefix = process.env.NODE_ENV === 'production' ? '/dobrodent' : '';
@@ -15,7 +17,9 @@ export default function ImageWithPlaceholder({
   src,
   alt,
   className = "",
-  fetchPriority = "auto"
+  fetchPriority = "auto",
+  width,
+  height
 }: ImageWithPlaceholderProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
@@ -32,13 +36,15 @@ export default function ImageWithPlaceholder({
       {!isLoaded && (
         <div className="absolute inset-0 flex items-center justify-center bg-[#fdfaf9] z-10 transition-opacity duration-300">
           <div className="relative flex items-center justify-center">
-            {/* Spinning/pulsing soft background ring */}
-            <div className="absolute w-32 h-32 rounded-full border-2 border-primary/20 border-t-primary animate-spin"></div>
+            {/* Spinning/pulsing soft background ring with larger radius */}
+            <div className="absolute w-28 h-28 rounded-full border-2 border-primary/20 border-t-primary animate-spin"></div>
             {/* Pulsing logo icon */}
             <img
-              src={`${prefix}/logo_transparent.png`}
+              src={`${prefix}/logo-dobrodent.webp`}
               alt="Завантаження..."
-              className="w-20 h-20 object-contain animate-pulse relative z-20"
+              width={48}
+              height={48}
+              className="w-12 h-12 object-contain animate-pulse relative z-20"
             />
           </div>
         </div>
@@ -49,6 +55,8 @@ export default function ImageWithPlaceholder({
         ref={imgRef}
         src={src}
         alt={alt}
+        width={width}
+        height={height}
         fetchPriority={fetchPriority}
         onLoad={() => setIsLoaded(true)}
         className={`${className} transition-opacity duration-500 ease-in-out ${
