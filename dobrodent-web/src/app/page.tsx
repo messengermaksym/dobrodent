@@ -25,12 +25,12 @@ export default function Home() {
                   <source media="(max-width: 640px)" srcSet={`${prefix}/dobrodent-main-banner-mobile.webp`} type="image/webp" />
                   <img fetchPriority="high" src={`${prefix}/dobrodent-main-banner.webp`} alt="Добродент клініка" width={1440} height={1080} className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
                 </picture>
-                <div className="absolute inset-0 pointer-events-none lg:hidden" style={{ background: "linear-gradient(to bottom, transparent, rgba(248, 249, 250, 0.5) 50%, #f8f9fa 100%)" }} />
+                <div className="absolute inset-0 pointer-events-none lg:hidden" style={{ background: "linear-gradient(to bottom, transparent 20%, rgba(248, 249, 250, 0.85) 65%, #f8f9fa 100%)" }} />
               </div>
             </div>
  
             {/* Text Column - Second in DOM, ordered first on desktop */}
-            <ScrollReveal variant="fadeUp" className="lg:order-1 -mt-16 sm:-mt-24 lg:mt-0 relative z-20">
+            <ScrollReveal variant="fadeUp" className="lg:order-1 hero-short-screen-pull relative z-20">
               <div className="max-w-2xl">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-primary mb-4 sm:mb-6" style={{ fontFamily: "var(--font-cormorant-garamond), serif" }}>
                   <span className="text-foreground">Ваша ідеальна усмішка</span> <span className="whitespace-nowrap">починається тут</span>

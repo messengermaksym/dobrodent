@@ -66,6 +66,13 @@ details[open] summary ~ * {
   animation: heroEntry 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* Pull hero text block onto gradient on ALL mobile screens */
+@media (max-width: 640px) {
+  .hero-short-screen-pull {
+    margin-top: -5rem !important;
+  }
+}
+
 /* Global focus and smooth transitions */
 a, button {
   transition: all 0.2s ease-in-out;
