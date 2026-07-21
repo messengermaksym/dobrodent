@@ -62,7 +62,7 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-12 items-center">
             <ScrollReveal variant="fadeUp" className="-mx-4 sm:-mx-6 sm:-mt-24 lg:m-0">
               <div className="relative aspect-[4/3] rounded-none lg:rounded-2xl overflow-hidden border-0 lg:border lg:border-border">
-                <ImageWithPlaceholder src={`${prefix}/dobrodent_clinic.webp`} alt="Медичний стоматологічний центр Добродент" width={1000} height={750} className="w-full h-full object-cover" />
+                <ImageWithPlaceholder src={`${prefix}/dobrodent_clinic.webp`} alt="Медичний стоматологічний центр Добродент" width={800} height={600} className="w-full h-full object-cover" />
                 <div className="absolute inset-0 pointer-events-none lg:hidden" style={{ background: "linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.5) 50%, #ffffff 100%)" }} />
               </div>
             </ScrollReveal>
