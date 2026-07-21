@@ -35,7 +35,7 @@ export default function Home() {
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-primary mb-6" style={{ fontFamily: "var(--font-cormorant-garamond), serif" }}>
                   <span className="text-foreground">Ваша ідеальна усмішка</span> <span className="whitespace-nowrap">починається тут</span>
                 </h1>
-                <p className="text-lg sm:text-xl text-foreground/80 mb-8 leading-relaxed">
+                <p className="hero-subtext text-lg sm:text-xl text-foreground/80 mb-8 leading-relaxed">
                   Зробити свою усмішку привабливішою ніколи не пізно. Пропонуємо безболісне лікування, професійну турботу та комфорт, де цінують ваш час.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">

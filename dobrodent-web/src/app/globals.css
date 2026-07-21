@@ -66,6 +66,13 @@ details[open] summary ~ * {
   animation: heroEntry 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* Hide hero subtext on mobile screens with height <= 840px */
+@media (max-width: 640px) and (max-height: 840px) {
+  .hero-subtext {
+    display: none !important;
+  }
+}
+
 /* Global focus and smooth transitions */
 a, button {
   transition: all 0.2s ease-in-out;
