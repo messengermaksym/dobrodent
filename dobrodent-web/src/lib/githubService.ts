@@ -24,9 +24,9 @@ export async function commitJsonToGithub(
   const apiUrl = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${fullPath}`;
 
   try {
-    // 1. Get current file SHA
+    // 1. Get current file SHA (must specify branch, otherwise GitHub returns SHA from default branch)
     let sha = "";
-    const getRes = await fetch(apiUrl, {
+    const getRes = await fetch(`${apiUrl}?ref=${GITHUB_BRANCH}`, {
       headers: {
         Authorization: `Bearer ${authToken}`,
         Accept: "application/vnd.github+json",
