@@ -1,12 +1,14 @@
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { CheckCircle2, HeartPulse, Clock, Sparkles, ArrowRight, ShieldCheck, Stethoscope, Baby, TestTube, Activity } from "lucide-react";
-import FAQSection from "@/components/FAQSection";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
 import ScrollReveal from "@/components/ScrollReveal";
 import StaggerContainer from "@/components/StaggerContainer";
 import { StaggerItem } from "@/components/StaggerContainer";
 import BookingButton from "@/components/BookingButton";
-import ReviewsSection from "@/components/ReviewsSection";
+
+const FAQSection = dynamic(() => import("@/components/FAQSection"));
+const ReviewsSection = dynamic(() => import("@/components/ReviewsSection"));
 
 const prefix = process.env.NODE_ENV === 'production' ? '/dobrodent' : '';
 
@@ -308,6 +310,7 @@ export default function Home() {
             <ScrollReveal variant="fadeRight" delay={0.15} className="lg:col-span-7">
               <div className="h-[450px] relative w-full">
                 <iframe
+                  title="Карта розташування стоматологічного центру Добродент"
                   src="https://maps.google.com/maps?q=Мукачево,%20Ярослава%20Мудрого%2055&t=&z=16&ie=UTF8&iwloc=&output=embed"
                   width="100%"
                   height="100%"

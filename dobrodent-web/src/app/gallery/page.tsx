@@ -12,15 +12,15 @@ export const metadata: Metadata = {
 
 export default function Gallery() {
   const images = [
-    "/img_9814.jpg",
-    "/img_9824.jpg",
-    "/img_9885.jpg",
-    "/img_1439_1.jpg",
-    "/img_1444_2.jpg",
-    "/img_9854.jpg",
-    "/img_9847.jpg",
-    "/img_9917.jpg",
-    "/img_1437_1.jpg",
+    "/img_9814.webp",
+    "/img_9824.webp",
+    "/img_9885.webp",
+    "/img_1439_1.webp",
+    "/img_1444_2.webp",
+    "/img_9854.webp",
+    "/img_9847.webp",
+    "/img_9917.webp",
+    "/img_1437_1.webp",
     "/non-existent-image.jpg",
   ];
 

@@ -98,7 +98,7 @@ export default function ReviewsSection() {
                       {getInitials(review.name)}
                     </div>
                     <div>
-                      <h4 className="font-bold text-foreground text-sm">{review.name}</h4>
+                      <h3 className="font-bold text-foreground text-sm">{review.name}</h3>
                       <span className="text-xs text-muted-foreground">Пацієнт клініки</span>
                     </div>
                   </div>
@@ -153,7 +153,7 @@ export default function ReviewsSection() {
                         {getInitials(reviews[currentIndex].name)}
                       </div>
                       <div>
-                        <h4 className="font-bold text-foreground text-sm">{reviews[currentIndex].name}</h4>
+                        <h3 className="font-bold text-foreground text-sm">{reviews[currentIndex].name}</h3>
                         <span className="text-xs text-muted-foreground">Пацієнт клініки</span>
                       </div>
                     </div>
@@ -188,7 +188,7 @@ export default function ReviewsSection() {
                         {getInitials(reviews[(currentIndex + 1) % reviews.length].name)}
                       </div>
                       <div>
-                        <h4 className="font-bold text-foreground text-sm">{reviews[(currentIndex + 1) % reviews.length].name}</h4>
+                        <h3 className="font-bold text-foreground text-sm">{reviews[(currentIndex + 1) % reviews.length].name}</h3>
                         <span className="text-xs text-muted-foreground">Пацієнт клініки</span>
                       </div>
                     </div>

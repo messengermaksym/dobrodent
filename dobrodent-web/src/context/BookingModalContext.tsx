@@ -1,7 +1,9 @@
 "use client";
 
 import React, { createContext, useContext, useState } from "react";
-import BookingModal from "@/components/BookingModal";
+import dynamic from "next/dynamic";
+
+const BookingModal = dynamic(() => import("@/components/BookingModal"), { ssr: false });
 
 type BookingModalContextType = {
   openModal: () => void;

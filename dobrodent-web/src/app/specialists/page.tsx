@@ -18,7 +18,7 @@ export default function Specialists() {
       specialties: ["Хірург-стоматолог", "Ортопед-стоматолог", "Імплантолог"],
       education: "В 1990 р. закінчив Полтавський державний медичний стоматологічний інститут.",
       category: "Вища категорія",
-      image: "/d5_hiog.png",
+      image: "/d5_hiog.webp",
     },
     {
       name: "Кудря Ірина Йосипівна",
@@ -26,7 +26,7 @@ export default function Specialists() {
       specialties: ["Стоматологія"],
       education: "В 1988 р. закінчила Полтавський державний медичний стоматологічний інститут.",
       category: "Вища категорія",
-      image: "/d6_hiog.png",
+      image: "/d6_hiog.webp",
     },
     {
       name: "Лісничук Олена Ростиславівна",
@@ -34,7 +34,7 @@ export default function Specialists() {
       specialties: ["Ортодонтія"],
       education: "В 2009 р. закінчила Вищий державний навчальний заклад України \"Українська медична стоматологічна академія\".",
       category: "",
-      image: "/d4_hiog.png",
+      image: "/d4_hiog.webp",
     },
   ];
 

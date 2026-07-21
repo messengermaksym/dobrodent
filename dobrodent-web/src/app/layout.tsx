@@ -5,12 +5,14 @@ import "./globals.css";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin", "cyrillic"],
+  display: "swap",
 });
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ["latin", "cyrillic"],
   weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
 });
 
 const cormorantGaramond = Cormorant_Garamond({
@@ -18,6 +20,7 @@ const cormorantGaramond = Cormorant_Garamond({
   subsets: ["latin", "cyrillic"],
   weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -61,6 +64,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { BookingModalProvider } from "@/context/BookingModalContext";
 
+const prefix = process.env.NODE_ENV === 'production' ? '/dobrodent' : '';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -68,6 +73,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="uk" className={`${inter.variable} ${montserrat.variable} ${cormorantGaramond.variable} h-full antialiased`}>
+      <head>
+        <link rel="preload" href={`${prefix}/dobrodent-main-banner.webp`} as="image" type="image/webp" fetchPriority="high" />
+      </head>
       <body className="min-h-full flex flex-col font-sans">
         <BookingModalProvider>
           <div className="flex flex-col min-h-screen w-full relative">
