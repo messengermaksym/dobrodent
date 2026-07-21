@@ -26,7 +26,7 @@ export default function Header() {
             </div>
             <div className="hidden sm:flex items-center gap-1.5">
               <Clock className="w-4 h-4" />
-              <span>Пн-Пт: 9:00 - 18:00</span>
+              <span>Пн-Пт: 9:00 - 18:00 | Сб: 9:00 - 14:00</span>
             </div>
           </div>
           <div className="flex items-center gap-4 font-medium">

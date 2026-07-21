@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Phone, MapPin, Mail } from 'lucide-react';
+import { Phone, MapPin, Mail, Clock } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -48,6 +48,13 @@ export default function Footer() {
                 <div className="flex flex-col gap-1">
                   <a href="tel:+380313154377" className="hover:text-white transition-colors">(03131) 5-43-77</a>
                   <a href="tel:+380993693277" className="hover:text-white transition-colors">099 369 32 77</a>
+                </div>
+              </li>
+              <li className="flex items-start gap-3">
+                <Clock className="w-5 h-5 shrink-0 mt-0.5" />
+                <div className="flex flex-col text-xs">
+                  <span>Пн - Пт: 9:00 - 18:00</span>
+                  <span>Сб: 09:00 - 14:00</span>
                 </div>
               </li>
               <li className="flex items-center gap-3">

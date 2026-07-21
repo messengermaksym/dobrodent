@@ -1,0 +1,39 @@
+export interface Specialist {
+  id: string;
+  name: string;
+  role: string;
+  specialties: string[];
+  education: string;
+  category?: string;
+  image: string;
+}
+
+export const defaultSpecialists: Specialist[] = [
+  {
+    id: "spec-1",
+    name: "Кудря Ростислав Улянович",
+    role: "Директор",
+    specialties: ["Хірург-стоматолог", "Ортопед-стоматолог", "Імплантолог"],
+    education: "В 1990 р. закінчив Полтавський державний медичний стоматологічний інститут.",
+    category: "Вища категорія",
+    image: "/d5_hiog.webp",
+  },
+  {
+    id: "spec-2",
+    name: "Кудря Ірина Йосипівна",
+    role: "Лікар-стоматолог",
+    specialties: ["Стоматологія"],
+    education: "В 1988 р. закінчила Полтавський державний медичний стоматологічний інститут.",
+    category: "Вища категорія",
+    image: "/d6_hiog.webp",
+  },
+  {
+    id: "spec-3",
+    name: "Лісничук Олена Ростиславівна",
+    role: "Лікар-стоматолог, ортодонт",
+    specialties: ["Ортодонтія"],
+    education: "В 2009 р. закінчила Вищий державний навчальний заклад України \"Українська медична стоматологічна академія\".",
+    category: "",
+    image: "/d4_hiog.webp",
+  },
+];

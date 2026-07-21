@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="dobrodent-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fdfbfb"/>
+      <stop offset="50%" stop-color="#f7eeed"/>
+      <stop offset="100%" stop-color="#eedcdb"/>
+    </linearGradient>
+    
+    <linearGradient id="burgundy-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8b3a35"/>
+      <stop offset="100%" stop-color="#6e2c28"/>
+    </linearGradient>
+
+    <linearGradient id="doctor-coat" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f8f9fa"/>
+    </linearGradient>
+
+    <filter id="soft-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#6e2c28" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <!-- Background in Dobrodent Warm Muted Palette -->
+  <rect width="400" height="400" fill="url(#dobrodent-bg)"/>
+  
+  <!-- Subtle Decorative Background Circles -->
+  <circle cx="200" cy="200" r="170" fill="#6e2c28" opacity="0.04"/>
+  <circle cx="200" cy="200" r="130" fill="#6e2c28" opacity="0.04"/>
+
+  <!-- Medical Cross Watermark Accent in Dobrodent Burgundy -->
+  <g opacity="0.08" fill="#6e2c28">
+    <rect x="182" y="35" width="36" height="110" rx="10"/>
+    <rect x="145" y="72" width="110" height="36" rx="10"/>
+  </g>
+
+  <!-- Head Silhouette -->
+  <circle cx="200" cy="140" r="48" fill="#cbd5e1" filter="url(#soft-shadow)"/>
+
+  <!-- White Medical Coat -->
+  <path d="M 110 360 C 110 240, 140 210, 200 210 C 260 210, 290 240, 290 360 Z" fill="url(#doctor-coat)" stroke="#e2e8f0" stroke-width="2" filter="url(#soft-shadow)"/>
+  
+  <!-- Inner V-Neck Scrubs in Dobrodent Burgundy #6e2c28 -->
+  <path d="M 175 210 L 200 260 L 225 210 Z" fill="url(#burgundy-grad)"/>
+  
+  <!-- Stethoscope with Dobrodent Burgundy Details -->
+  <path d="M 160 210 C 160 270, 240 270, 240 210" fill="none" stroke="#6e2c28" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="200" cy="285" r="12" fill="#6e2c28" stroke="#ffffff" stroke-width="3" filter="url(#soft-shadow)"/>
+
+  <!-- Medical Badge Accent on Coat Lapel -->
+  <rect x="236" y="265" width="22" height="30" rx="4" fill="#6e2c28" filter="url(#soft-shadow)"/>
+  <line x1="241" y1="275" x2="253" y2="275" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+  <line x1="241" y1="283" x2="249" y2="283" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+</svg>

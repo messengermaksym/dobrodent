@@ -61,8 +61,8 @@ export default function Home() {
         <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-12 items-center">
             <ScrollReveal variant="fadeUp" className="-mx-4 sm:-mx-6 sm:-mt-24 lg:m-0">
-              <div className="relative aspect-[4/3] rounded-none lg:rounded-2xl overflow-hidden border-0 lg:border lg:border-border">
-                <ImageWithPlaceholder src={`${prefix}/dobrodent_clinic.webp`} alt="Медичний стоматологічний центр Добродент" width={800} height={600} className="w-full h-full object-cover" />
+              <div className="relative aspect-[4/3] rounded-none lg:rounded-2xl overflow-hidden border-0 lg:border lg:border-border group">
+                <ImageWithPlaceholder src={`${prefix}/dobrodent_clinic.webp`} alt="Медичний стоматологічний центр Добродент" width={800} height={600} className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
                 <div className="absolute inset-0 pointer-events-none lg:hidden" style={{ background: "linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.5) 50%, #ffffff 100%)" }} />
               </div>
             </ScrollReveal>
@@ -291,7 +291,8 @@ export default function Home() {
                     </div>
                     <div>
                       <strong className="block text-foreground">Графік роботи:</strong>
-                      <span>Понеділок - П&apos;ятниця: 9:00 - 18:00</span>
+                      <span className="block">Понеділок - П&apos;ятниця: 9:00 - 18:00</span>
+                      <span className="block text-primary font-medium">Субота: 09:00 - 14:00</span>
                     </div>
                   </div>
                 </div>

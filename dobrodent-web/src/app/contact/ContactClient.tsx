@@ -118,7 +118,8 @@ export default function ContactClient() {
                   <div>
                     <strong className="block text-foreground text-lg mb-1">Графік роботи</strong>
                     <span className="text-muted-foreground block">Пн - Пт: 9:00 - 18:00</span>
-                    <span className="text-muted-foreground block">Сб - Нд: Вихідний</span>
+                    <span className="text-muted-foreground block font-medium text-foreground">Сб: 09:00 - 14:00</span>
+                    <span className="text-muted-foreground block text-xs opacity-75">Нд: Вихідний</span>
                   </div>
                 </li>
               </ul>

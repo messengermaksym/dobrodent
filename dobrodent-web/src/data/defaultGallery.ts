@@ -1,0 +1,17 @@
+export interface GalleryImage {
+  id: string;
+  url: string;
+  title?: string;
+}
+
+export const defaultGalleryImages: GalleryImage[] = [
+  { id: "img-1", url: "/img_9814.webp", title: "Кабінет клініки" },
+  { id: "img-2", url: "/img_9824.webp", title: "Стоматологічна установка" },
+  { id: "img-3", url: "/img_9885.webp", title: "Обладнання" },
+  { id: "img-4", url: "/img_1439_1.webp", title: "Робочий простір" },
+  { id: "img-5", url: "/img_1444_2.webp", title: "Зона прийому" },
+  { id: "img-6", url: "/img_9854.webp", title: "Кабінет" },
+  { id: "img-7", url: "/img_9847.webp", title: "Інструменти" },
+  { id: "img-8", url: "/img_9917.webp", title: "Стерилізаційна" },
+  { id: "img-9", url: "/img_1437_1.webp", title: "Зал очікування" },
+];
