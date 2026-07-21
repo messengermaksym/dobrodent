@@ -7,12 +7,12 @@ import { Plus, Trash2, Save, CheckCircle2, RefreshCw, Upload, ChevronUp, Chevron
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
 
 interface SpecialistsEditorProps {
-  initialSpecialists: Specialist[];
+  specialists: Specialist[];
+  onChange: (list: Specialist[]) => void;
   onSave: (list: Specialist[]) => Promise<boolean>;
 }
 
-export default function SpecialistsEditor({ initialSpecialists, onSave }: SpecialistsEditorProps) {
-  const [specialists, setSpecialists] = useState<Specialist[]>(initialSpecialists);
+export default function SpecialistsEditor({ specialists, onChange, onSave }: SpecialistsEditorProps) {
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [uploadingId, setUploadingId] = useState<string | null>(null);
@@ -28,7 +28,7 @@ export default function SpecialistsEditor({ initialSpecialists, onSave }: Specia
       category: "Вища категорія",
       image: "/doctor-placeholder.svg?v=2",
     };
-    setSpecialists([newSpec, ...specialists]);
+    onChange([newSpec, ...specialists]);
   };
 
   const moveSpecialist = (index: number, direction: -1 | 1) => {
@@ -37,18 +37,18 @@ export default function SpecialistsEditor({ initialSpecialists, onSave }: Specia
     const updated = [...specialists];
     const [moved] = updated.splice(index, 1);
     updated.splice(targetIndex, 0, moved);
-    setSpecialists(updated);
+    onChange(updated);
   };
 
   const updateSpecialist = (id: string, field: keyof Specialist, value: any) => {
-    setSpecialists(
+    onChange(
       specialists.map((s) => (s.id === id ? { ...s, [field]: value } : s))
     );
   };
 
   const removeSpecialist = (id: string) => {
     if (confirm("Ви дійсно хочете видалити цього спеціаліста?")) {
-      setSpecialists(specialists.filter((s) => s.id !== id));
+      onChange(specialists.filter((s) => s.id !== id));
     }
   };
 
@@ -58,7 +58,7 @@ export default function SpecialistsEditor({ initialSpecialists, onSave }: Specia
       const url = await uploadImage(file, "specialists");
       updateSpecialist(id, "image", url);
     } catch (e) {
-      alert("Помилка завантаження зображення");
+      alert("Помилка завантаження фотографії");
     } finally {
       setUploadingId(null);
     }
@@ -79,26 +79,25 @@ export default function SpecialistsEditor({ initialSpecialists, onSave }: Specia
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-muted/40 p-4 rounded-xl border border-border">
         <div>
-          <h2 className="text-lg font-bold text-foreground">Редагування Команди Спеціалістів</h2>
-          <p className="text-xs text-muted-foreground">Додавайте лікарів, змінюйте їх порядок, фотографії та спеціалізацію</p>
+          <h2 className="text-lg font-bold text-foreground">Редагування Спеціалістів</h2>
+          <p className="text-xs text-muted-foreground">Керуйте списком лікарів, їхніми посадами, категоріями та світлинами</p>
         </div>
-        <div className="flex items-center gap-3 w-full sm:w-auto">
+        <div className="flex items-center gap-2">
           <button
             onClick={addSpecialist}
-            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-secondary text-secondary-foreground text-sm font-semibold rounded-xl hover:bg-secondary/80 hover:scale-[1.02] active:scale-[0.98] cursor-pointer transition-all duration-150 shadow-sm"
+            className="px-4 py-2 border border-primary/20 text-primary hover:bg-primary/5 text-sm font-semibold rounded-xl cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all"
           >
-            <Plus className="w-4 h-4" />
             Додати лікаря
           </button>
           <button
             onClick={handleSave}
             disabled={isSaving}
-            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-primary text-primary-foreground text-sm font-bold rounded-xl hover:bg-primary/90 hover:scale-[1.02] active:scale-[0.98] cursor-pointer transition-all duration-150 shadow-sm disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-5 py-2 bg-primary text-primary-foreground text-sm font-bold rounded-xl hover:bg-primary/90 hover:scale-[1.02] active:scale-[0.98] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm"
           >
             {isSaving ? (
               <RefreshCw className="w-4 h-4 animate-spin" />
             ) : saveSuccess ? (
-              <CheckCircle2 className="w-4 h-4 text-green-300" />
+              <CheckCircle2 className="w-4 h-4" />
             ) : (
               <Save className="w-4 h-4" />
             )}
@@ -129,9 +128,6 @@ export default function SpecialistsEditor({ initialSpecialists, onSave }: Specia
                 >
                   <ChevronDown className="w-4 h-4" />
                 </button>
-                <span className="text-xs font-semibold text-muted-foreground ml-1">
-                  Позиція #{specIndex + 1}
-                </span>
               </div>
 
               <button
@@ -153,56 +149,68 @@ export default function SpecialistsEditor({ initialSpecialists, onSave }: Specia
                 />
               </div>
               <div className="space-y-2 flex-grow">
-                <label className="block text-xs font-semibold text-muted-foreground">Фото лікаря</label>
-                <label className="inline-flex items-center gap-2 px-3 py-2 bg-muted hover:bg-muted/80 text-foreground text-xs font-medium rounded-lg cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all border border-border">
-                  <Upload className="w-3.5 h-3.5" />
-                  {uploadingId === person.id ? "Завантаження..." : "Завантажити нове фото"}
+                <label className="block text-xs font-semibold text-muted-foreground">Світлина лікаря</label>
+                <div className="relative">
                   <input
                     type="file"
                     accept="image/*"
-                    className="hidden"
                     onChange={(e) => {
                       if (e.target.files?.[0]) {
                         handlePhotoUpload(person.id, e.target.files[0]);
                       }
                     }}
+                    className="hidden"
+                    id={`file-upload-${person.id}`}
                   />
-                </label>
+                  <label
+                    htmlFor={`file-upload-${person.id}`}
+                    className="inline-flex items-center gap-2 px-3 py-1.5 bg-muted hover:bg-muted/80 text-foreground text-xs font-semibold rounded-lg border border-border cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all shadow-sm"
+                  >
+                    {uploadingId === person.id ? (
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                    ) : (
+                      <Upload className="w-3.5 h-3.5" />
+                    )}
+                    {uploadingId === person.id ? "Завантаження..." : "Завантажити фото"}
+                  </label>
+                </div>
               </div>
             </div>
 
             {/* Form Fields */}
-            <div className="space-y-3 pt-2">
-              <div>
-                <label className="block text-xs font-semibold text-muted-foreground mb-1">ПІБ Лікаря</label>
-                <input
-                  type="text"
-                  value={person.name}
-                  onChange={(e) => updateSpecialist(person.id, "name", e.target.value)}
-                  className="w-full px-3 py-2 bg-muted/20 border border-border rounded-lg text-sm font-bold text-foreground focus:outline-none focus:ring-1 focus:ring-primary cursor-text"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-semibold text-muted-foreground mb-1">ПІБ</label>
+                  <input
+                    type="text"
+                    value={person.name}
+                    onChange={(e) => updateSpecialist(person.id, "name", e.target.value)}
+                    className="w-full px-3 py-2 bg-muted/40 border border-border rounded-xl text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all"
+                    placeholder="ПІБ лікаря"
+                  />
+                </div>
                 <div>
                   <label className="block text-xs font-semibold text-muted-foreground mb-1">Посада</label>
                   <input
                     type="text"
                     value={person.role}
                     onChange={(e) => updateSpecialist(person.id, "role", e.target.value)}
-                    className="w-full px-3 py-2 bg-muted/20 border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary cursor-text"
+                    className="w-full px-3 py-2 bg-muted/40 border border-border rounded-xl text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all"
+                    placeholder="Посада (наприклад, Директор)"
                   />
                 </div>
-                <div>
-                  <label className="block text-xs font-semibold text-muted-foreground mb-1">Категорія</label>
-                  <input
-                    type="text"
-                    value={person.category || ""}
-                    onChange={(e) => updateSpecialist(person.id, "category", e.target.value)}
-                    placeholder="Напр. Вища категорія"
-                    className="w-full px-3 py-2 bg-muted/20 border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary cursor-text"
-                  />
-                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-muted-foreground mb-1">Категорія</label>
+                <input
+                  type="text"
+                  value={person.category || ""}
+                  onChange={(e) => updateSpecialist(person.id, "category", e.target.value)}
+                  className="w-full px-3 py-2 bg-muted/40 border border-border rounded-xl text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all"
+                  placeholder="Вища категорія / Перша категорія"
+                />
               </div>
 
               <div>
@@ -219,17 +227,19 @@ export default function SpecialistsEditor({ initialSpecialists, onSave }: Specia
                       e.target.value.split(",").map((s) => s.trim()).filter(Boolean)
                     )
                   }
-                  className="w-full px-3 py-2 bg-muted/20 border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary cursor-text"
+                  className="w-full px-3 py-2 bg-muted/40 border border-border rounded-xl text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all"
+                  placeholder="Хірургія, Імплантація"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-muted-foreground mb-1">Освіта та досвід</label>
+                <label className="block text-xs font-semibold text-muted-foreground mb-1">Освіта</label>
                 <textarea
-                  rows={2}
-                  value={person.education}
+                  value={person.education || ""}
                   onChange={(e) => updateSpecialist(person.id, "education", e.target.value)}
-                  className="w-full px-3 py-2 bg-muted/20 border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary resize-none cursor-text"
+                  rows={2}
+                  className="w-full px-3 py-2 bg-muted/40 border border-border rounded-xl text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all resize-none"
+                  placeholder="Закінчив університет у..."
                 />
               </div>
             </div>

@@ -8,7 +8,10 @@ export async function commitJsonToGithub(
   commitMessage: string,
   token?: string
 ): Promise<{ success: boolean; message: string }> {
-  const authToken = token || process.env.NEXT_PUBLIC_GITHUB_TOKEN || localStorage.getItem("dobrodent_github_token");
+  const authToken =
+    (token && token.trim().length > 0 ? token.trim() : null) ||
+    localStorage.getItem("dobrodent_github_token") ||
+    process.env.NEXT_PUBLIC_GITHUB_TOKEN;
 
   if (!authToken) {
     return {
@@ -62,13 +65,13 @@ export async function commitJsonToGithub(
     if (putRes.ok) {
       return {
         success: true,
-        message: "Зміни успішно закомічені в GitHub! Сайт буде перезібрано за ~1 хвилину.",
+        message: "Зміни успішно збережені на сайті! За ~1 хвилину оновлення відобразиться на всіх пристроях.",
       };
     } else {
       const errJson = await putRes.json();
       return {
         success: false,
-        message: errJson.message || "Помилка збереження в GitHub",
+        message: errJson.message || "Помилка збереження в GitHub API",
       };
     }
   } catch (e: any) {

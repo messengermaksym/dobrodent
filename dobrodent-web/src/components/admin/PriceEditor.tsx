@@ -5,12 +5,12 @@ import { PriceCategory, PriceItem } from "@/data/defaultPrices";
 import { Plus, Trash2, Save, CheckCircle2, RefreshCw, ChevronUp, ChevronDown } from "lucide-react";
 
 interface PriceEditorProps {
-  initialCategories: PriceCategory[];
+  categories: PriceCategory[];
+  onChange: (categories: PriceCategory[]) => void;
   onSave: (categories: PriceCategory[]) => Promise<boolean>;
 }
 
-export default function PriceEditor({ initialCategories, onSave }: PriceEditorProps) {
-  const [categories, setCategories] = useState<PriceCategory[]>(initialCategories);
+export default function PriceEditor({ categories, onChange, onSave }: PriceEditorProps) {
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
 
@@ -23,7 +23,7 @@ export default function PriceEditor({ initialCategories, onSave }: PriceEditorPr
         { id: `p-${Date.now()}`, name: "Нова послуга", price: "1000 грн" }
       ]
     };
-    setCategories([newCategory, ...categories]);
+    onChange([newCategory, ...categories]);
   };
 
   const moveCategory = (index: number, direction: -1 | 1) => {
@@ -32,18 +32,18 @@ export default function PriceEditor({ initialCategories, onSave }: PriceEditorPr
     const updated = [...categories];
     const [moved] = updated.splice(index, 1);
     updated.splice(targetIndex, 0, moved);
-    setCategories(updated);
+    onChange(updated);
   };
 
   const updateCategoryName = (catId: string, name: string) => {
-    setCategories(
+    onChange(
       categories.map((c) => (c.id === catId ? { ...c, name } : c))
     );
   };
 
   const removeCategory = (catId: string) => {
     if (confirm("Ви дійсно хочете видалити цю категорію зі всіма послугами?")) {
-      setCategories(categories.filter((c) => c.id !== catId));
+      onChange(categories.filter((c) => c.id !== catId));
     }
   };
 
@@ -54,7 +54,7 @@ export default function PriceEditor({ initialCategories, onSave }: PriceEditorPr
       name: "Нова послуга",
       price: "1000 грн",
     };
-    setCategories(
+    onChange(
       categories.map((c) =>
         c.id === catId ? { ...c, items: [newItem, ...c.items] } : c
       )
@@ -62,7 +62,7 @@ export default function PriceEditor({ initialCategories, onSave }: PriceEditorPr
   };
 
   const moveItem = (catId: string, index: number, direction: -1 | 1) => {
-    setCategories(
+    onChange(
       categories.map((c) => {
         if (c.id !== catId) return c;
         const targetIndex = index + direction;
@@ -76,7 +76,7 @@ export default function PriceEditor({ initialCategories, onSave }: PriceEditorPr
   };
 
   const updateItem = (catId: string, itemId: string, field: "name" | "price", value: string) => {
-    setCategories(
+    onChange(
       categories.map((c) => {
         if (c.id !== catId) return c;
         return {
@@ -90,7 +90,7 @@ export default function PriceEditor({ initialCategories, onSave }: PriceEditorPr
   };
 
   const removeItem = (catId: string, itemId: string) => {
-    setCategories(
+    onChange(
       categories.map((c) => {
         if (c.id !== catId) return c;
         return {
@@ -119,23 +119,22 @@ export default function PriceEditor({ initialCategories, onSave }: PriceEditorPr
           <h2 className="text-lg font-bold text-foreground">Редагування Прайс-листа</h2>
           <p className="text-xs text-muted-foreground">Змінюйте назви, ціни, додавайте та впорядковуйте категорії</p>
         </div>
-        <div className="flex items-center gap-3 w-full sm:w-auto">
+        <div className="flex items-center gap-2">
           <button
             onClick={addCategory}
-            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-secondary text-secondary-foreground text-sm font-semibold rounded-xl hover:bg-secondary/80 hover:scale-[1.02] active:scale-[0.98] cursor-pointer transition-all duration-150 shadow-sm"
+            className="px-4 py-2 border border-primary/20 text-primary hover:bg-primary/5 text-sm font-semibold rounded-xl cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all"
           >
-            <Plus className="w-4 h-4" />
             Додати категорію
           </button>
           <button
             onClick={handleSave}
             disabled={isSaving}
-            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-primary text-primary-foreground text-sm font-bold rounded-xl hover:bg-primary/90 hover:scale-[1.02] active:scale-[0.98] cursor-pointer transition-all duration-150 shadow-sm disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-5 py-2 bg-primary text-primary-foreground text-sm font-bold rounded-xl hover:bg-primary/90 hover:scale-[1.02] active:scale-[0.98] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm"
           >
             {isSaving ? (
               <RefreshCw className="w-4 h-4 animate-spin" />
             ) : saveSuccess ? (
-              <CheckCircle2 className="w-4 h-4 text-green-300" />
+              <CheckCircle2 className="w-4 h-4" />
             ) : (
               <Save className="w-4 h-4" />
             )}
@@ -146,67 +145,75 @@ export default function PriceEditor({ initialCategories, onSave }: PriceEditorPr
 
       <div className="space-y-6">
         {categories.map((category, catIndex) => (
-          <div key={category.id} className="bg-background rounded-2xl border border-border overflow-hidden shadow-sm hover:border-primary/30 transition-colors">
-            {/* Category Header */}
-            <div className="bg-muted/60 px-4 sm:px-6 py-3.5 border-b border-border flex items-center justify-between gap-3">
-              {/* Order buttons */}
-              <div className="flex items-center gap-1">
-                <button
-                  onClick={() => moveCategory(catIndex, -1)}
-                  disabled={catIndex === 0}
-                  className="p-1 rounded-lg text-muted-foreground hover:text-foreground hover:bg-background/80 disabled:opacity-30 cursor-pointer disabled:cursor-not-allowed transition-all"
-                  title="Перемістити вгору"
-                >
-                  <ChevronUp className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => moveCategory(catIndex, 1)}
-                  disabled={catIndex === categories.length - 1}
-                  className="p-1 rounded-lg text-muted-foreground hover:text-foreground hover:bg-background/80 disabled:opacity-30 cursor-pointer disabled:cursor-not-allowed transition-all"
-                  title="Перемістити вниз"
-                >
-                  <ChevronDown className="w-4 h-4" />
-                </button>
+          <div key={category.id} className="bg-background rounded-2xl border border-border p-6 shadow-sm space-y-4 hover:border-primary/20 transition-colors">
+            {/* Category Header Controls */}
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-border pb-4">
+              <div className="flex items-center gap-3 w-full sm:w-auto">
+                {/* Order buttons */}
+                <div className="flex flex-col gap-0.5">
+                  <button
+                    onClick={() => moveCategory(catIndex, -1)}
+                    disabled={catIndex === 0}
+                    className="p-1 text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg disabled:opacity-20 cursor-pointer disabled:cursor-not-allowed transition-all"
+                    title="Перемістити вгору"
+                  >
+                    <ChevronUp className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => moveCategory(catIndex, 1)}
+                    disabled={catIndex === categories.length - 1}
+                    className="p-1 text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg disabled:opacity-20 cursor-pointer disabled:cursor-not-allowed transition-all"
+                    title="Перемістити вниз"
+                  >
+                    <ChevronDown className="w-4 h-4" />
+                  </button>
+                </div>
+
+                <input
+                  type="text"
+                  value={category.name}
+                  onChange={(e) => updateCategoryName(category.id, e.target.value)}
+                  className="text-lg font-bold bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none px-1 py-0.5 w-full sm:w-80 text-foreground transition-all"
+                  placeholder="Назва категорії"
+                />
               </div>
 
-              <input
-                type="text"
-                value={category.name}
-                onChange={(e) => updateCategoryName(category.id, e.target.value)}
-                placeholder="Назва категорії"
-                className="font-bold text-lg text-foreground bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors w-full cursor-text"
-              />
-              <span className="font-heading font-bold text-lg text-foreground whitespace-nowrap hidden sm:inline-block mr-2">
-                Ціна
-              </span>
-              <button
-                onClick={() => removeCategory(category.id)}
-                className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 p-2 rounded-lg cursor-pointer transition-all"
-                title="Видалити категорію"
-              >
-                <Trash2 className="w-5 h-5" />
-              </button>
+              <div className="flex items-center gap-2 ml-auto sm:ml-0">
+                <button
+                  onClick={() => addItem(category.id)}
+                  className="px-3 py-1.5 border border-border hover:bg-muted text-xs font-semibold rounded-lg text-foreground cursor-pointer transition-all"
+                >
+                  Додати послугу
+                </button>
+                <button
+                  onClick={() => removeCategory(category.id)}
+                  className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 p-1.5 rounded-lg cursor-pointer transition-all"
+                  title="Видалити категорію"
+                >
+                  <Trash2 className="w-5 h-5" />
+                </button>
+              </div>
             </div>
 
-            {/* Price Items */}
-            <div className="divide-y divide-border p-4 sm:p-6 space-y-3">
+            {/* Category Items */}
+            <div className="divide-y divide-border">
               {category.items.map((item, itemIndex) => (
-                <div key={item.id} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-3 first:pt-0">
-                  {/* Item Order buttons */}
-                  <div className="flex items-center gap-0.5">
+                <div key={item.id} className="py-3 flex flex-col sm:flex-row items-start sm:items-center gap-3 hover:bg-muted/10 px-2 rounded-lg transition-all group">
+                  {/* Reordering buttons for items */}
+                  <div className="flex items-center gap-1 sm:opacity-0 group-hover:opacity-100 transition-opacity">
                     <button
                       onClick={() => moveItem(category.id, itemIndex, -1)}
                       disabled={itemIndex === 0}
-                      className="p-1 rounded text-muted-foreground hover:text-foreground hover:bg-muted disabled:opacity-20 cursor-pointer disabled:cursor-not-allowed transition-all"
-                      title="Підняти послугу"
+                      className="p-1 text-muted-foreground hover:text-foreground hover:bg-muted rounded-md disabled:opacity-20 cursor-pointer disabled:cursor-not-allowed transition-all"
+                      title="Перемістити послугу вгору"
                     >
                       <ChevronUp className="w-3.5 h-3.5" />
                     </button>
                     <button
                       onClick={() => moveItem(category.id, itemIndex, 1)}
                       disabled={itemIndex === category.items.length - 1}
-                      className="p-1 rounded text-muted-foreground hover:text-foreground hover:bg-muted disabled:opacity-20 cursor-pointer disabled:cursor-not-allowed transition-all"
-                      title="Опустити послугу"
+                      className="p-1 text-muted-foreground hover:text-foreground hover:bg-muted rounded-md disabled:opacity-20 cursor-pointer disabled:cursor-not-allowed transition-all"
+                      title="Перемістити послугу вниз"
                     >
                       <ChevronDown className="w-3.5 h-3.5" />
                     </button>
@@ -216,20 +223,20 @@ export default function PriceEditor({ initialCategories, onSave }: PriceEditorPr
                     type="text"
                     value={item.name}
                     onChange={(e) => updateItem(category.id, item.id, "name", e.target.value)}
+                    className="flex-grow bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none px-1 py-0.5 text-sm text-foreground transition-all w-full sm:w-auto"
                     placeholder="Назва послуги"
-                    className="flex-grow px-3 py-2 bg-muted/20 border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary cursor-text"
                   />
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
                     <input
                       type="text"
                       value={item.price}
                       onChange={(e) => updateItem(category.id, item.id, "price", e.target.value)}
-                      placeholder="Ціна (напр. від 800 грн)"
-                      className="w-36 px-3 py-2 bg-muted/20 border border-border rounded-lg text-sm font-semibold text-primary focus:outline-none focus:ring-1 focus:ring-primary cursor-text"
+                      className="w-32 bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none px-1 py-0.5 text-sm font-bold text-primary text-right transition-all"
+                      placeholder="Ціна"
                     />
                     <button
                       onClick={() => removeItem(category.id, item.id)}
-                      className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 p-2 rounded-lg cursor-pointer transition-all"
+                      className="text-muted-foreground hover:text-destructive p-1 rounded hover:bg-muted cursor-pointer transition-all"
                       title="Видалити послугу"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -237,16 +244,6 @@ export default function PriceEditor({ initialCategories, onSave }: PriceEditorPr
                   </div>
                 </div>
               ))}
-
-              <div className="pt-3">
-                <button
-                  onClick={() => addItem(category.id)}
-                  className="inline-flex items-center gap-2 text-xs font-semibold text-primary hover:text-primary/80 hover:bg-primary/5 px-2.5 py-1.5 rounded-lg cursor-pointer transition-all"
-                >
-                  <Plus className="w-4 h-4" />
-                  Додати послугу в цю категорію
-                </button>
-              </div>
             </div>
           </div>
         ))}
