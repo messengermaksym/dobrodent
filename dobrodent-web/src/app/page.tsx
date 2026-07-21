@@ -30,12 +30,12 @@ export default function Home() {
             </div>
  
             {/* Text Column - Second in DOM, ordered first on desktop */}
-            <ScrollReveal variant="fadeUp" className="lg:order-1">
+            <ScrollReveal variant="fadeUp" className="lg:order-1 -mt-16 sm:-mt-24 lg:mt-0 relative z-20">
               <div className="max-w-2xl">
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-primary mb-6" style={{ fontFamily: "var(--font-cormorant-garamond), serif" }}>
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-primary mb-4 sm:mb-6" style={{ fontFamily: "var(--font-cormorant-garamond), serif" }}>
                   <span className="text-foreground">Ваша ідеальна усмішка</span> <span className="whitespace-nowrap">починається тут</span>
                 </h1>
-                <p className="hero-subtext text-lg sm:text-xl text-foreground/80 mb-8 leading-relaxed">
+                <p className="text-base sm:text-xl text-foreground/80 mb-6 sm:mb-8 leading-relaxed">
                   Зробити свою усмішку привабливішою ніколи не пізно. Пропонуємо безболісне лікування, професійну турботу та комфорт, де цінують ваш час.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
