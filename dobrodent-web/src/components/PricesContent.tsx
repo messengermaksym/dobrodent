@@ -1,24 +1,11 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import { Check } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import StaggerContainer, { StaggerItem } from "@/components/StaggerContainer";
-import { fetchPrices } from "@/lib/contentService";
-import { defaultPrices, PriceCategory } from "@/data/defaultPrices";
+import staticPrices from "@/content/prices.json";
+import { PriceCategory } from "@/data/defaultPrices";
 
 export default function PricesContent() {
-  const [categories, setCategories] = useState<PriceCategory[]>(defaultPrices);
-
-  useEffect(() => {
-    async function loadPrices() {
-      const data = await fetchPrices();
-      if (data && data.length > 0) {
-        setCategories(data);
-      }
-    }
-    loadPrices();
-  }, []);
+  const categories: PriceCategory[] = staticPrices as PriceCategory[];
 
   return (
     <div className="pt-8 pb-16 sm:pt-12 sm:pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -1,26 +1,12 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
 import ScrollReveal from "@/components/ScrollReveal";
 import StaggerContainer, { StaggerItem } from "@/components/StaggerContainer";
-import { fetchSpecialists } from "@/lib/contentService";
-import { defaultSpecialists, Specialist } from "@/data/defaultSpecialists";
-
+import staticSpecialists from "@/content/specialists.json";
+import { Specialist } from "@/data/defaultSpecialists";
 import { getImageUrl } from "@/lib/getImageUrl";
 
 export default function SpecialistsContent() {
-  const [specialists, setSpecialists] = useState<Specialist[]>(defaultSpecialists);
-
-  useEffect(() => {
-    async function loadSpecialists() {
-      const data = await fetchSpecialists();
-      if (data && data.length > 0) {
-        setSpecialists(data);
-      }
-    }
-    loadSpecialists();
-  }, []);
+  const specialists: Specialist[] = staticSpecialists as Specialist[];
 
   return (
     <div className="pt-8 pb-16 sm:pt-12 sm:pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

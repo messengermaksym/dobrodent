@@ -5,52 +5,46 @@ import AdminLoginForm from "@/components/admin/AdminLoginForm";
 import PriceEditor from "@/components/admin/PriceEditor";
 import SpecialistsEditor from "@/components/admin/SpecialistsEditor";
 import GalleryEditor from "@/components/admin/GalleryEditor";
-import {
-  fetchPrices,
-  savePrices,
-  fetchSpecialists,
-  saveSpecialists,
-  fetchGallery,
-  saveGallery,
-} from "@/lib/contentService";
-import { isFirebaseConfigured } from "@/lib/firebase";
+import staticPrices from "@/content/prices.json";
+import staticSpecialists from "@/content/specialists.json";
+import staticGallery from "@/content/gallery.json";
+import { commitJsonToGithub } from "@/lib/githubService";
 import { PriceCategory } from "@/data/defaultPrices";
 import { Specialist } from "@/data/defaultSpecialists";
 import { GalleryImage } from "@/data/defaultGallery";
-import { Tag, Users, Image as ImageIcon, LogOut, ShieldAlert, Key } from "lucide-react";
+import { Tag, Users, Image as ImageIcon, LogOut, Key, GitCommit, CheckCircle2, AlertCircle } from "lucide-react";
 
 export default function AdminPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [activeTab, setActiveTab] = useState<"prices" | "specialists" | "gallery" | "settings">("prices");
   const [isLoading, setIsLoading] = useState(true);
 
-  const [prices, setPrices] = useState<PriceCategory[]>([]);
-  const [specialists, setSpecialists] = useState<Specialist[]>([]);
-  const [gallery, setGallery] = useState<GalleryImage[]>([]);
+  const [prices, setPrices] = useState<PriceCategory[]>(staticPrices as PriceCategory[]);
+  const [specialists, setSpecialists] = useState<Specialist[]>(staticSpecialists as Specialist[]);
+  const [gallery, setGallery] = useState<GalleryImage[]>(staticGallery as GalleryImage[]);
+
+  const [githubToken, setGithubToken] = useState("");
+  const [tokenSaved, setTokenSaved] = useState(false);
 
   useEffect(() => {
     const logged = sessionStorage.getItem("dobrodent_admin_logged") === "true";
     setIsLoggedIn(logged);
 
-    async function loadAllData() {
-      setIsLoading(true);
-      const [p, s, g] = await Promise.all([
-        fetchPrices(),
-        fetchSpecialists(),
-        fetchGallery(),
-      ]);
-      setPrices(p);
-      setSpecialists(s);
-      setGallery(g);
-      setIsLoading(false);
-    }
+    const savedToken = localStorage.getItem("dobrodent_github_token") || "";
+    setGithubToken(savedToken);
 
-    loadAllData();
+    setIsLoading(false);
   }, []);
 
   const handleLogout = () => {
     sessionStorage.removeItem("dobrodent_admin_logged");
     setIsLoggedIn(false);
+  };
+
+  const handleSaveToken = () => {
+    localStorage.setItem("dobrodent_github_token", githubToken.trim());
+    setTokenSaved(true);
+    setTimeout(() => setTokenSaved(false), 3000);
   };
 
   if (!isLoggedIn) {
@@ -65,7 +59,7 @@ export default function AdminPage() {
           <span className="text-xs font-semibold uppercase tracking-wider text-primary block mb-1">
             Клініка Добродент
           </span>
-          <h1 className="text-3xl font-bold text-foreground">Панель Управління Контентом</h1>
+          <h1 className="text-3xl font-bold text-foreground">Панель Управління Контентом (Git-SSG)</h1>
         </div>
         <button
           onClick={handleLogout}
@@ -75,19 +69,6 @@ export default function AdminPage() {
           Вийти з кабінету
         </button>
       </div>
-
-      {/* Firebase Config Notice */}
-      {!isFirebaseConfigured && (
-        <div className="mb-8 p-4 bg-amber-500/10 border border-amber-500/30 rounded-2xl text-amber-600 dark:text-amber-400 text-sm flex items-start gap-3">
-          <ShieldAlert className="w-5 h-5 flex-shrink-0 mt-0.5" />
-          <div>
-            <strong className="font-bold block mb-1">Тестовий режим (Без бази даних Firebase)</strong>
-            <p className="leading-relaxed">
-              Ви зараз можете редагувати контент для перевірки! Зміни зберігатимуться локально у вашому браузері. Щоб зміни бачили всі відвідувачі вашого сайту — підключіть безкоштовну базу Firebase за підказками у вкладці <strong>Налаштування</strong>.
-            </p>
-          </div>
-        </div>
-      )}
 
       {/* Tabs */}
       <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 border-b border-border no-scrollbar">
@@ -136,7 +117,7 @@ export default function AdminPage() {
           }`}
         >
           <Key className="w-4 h-4" />
-          Налаштування Firebase
+          Налаштування GitHub Git-SSG
         </button>
       </div>
 
@@ -149,9 +130,14 @@ export default function AdminPage() {
             <PriceEditor
               initialCategories={prices}
               onSave={async (newPrices) => {
-                const ok = await savePrices(newPrices);
-                if (ok) setPrices(newPrices);
-                return ok;
+                const res = await commitJsonToGithub("prices.json", newPrices, "feat: оновлено прайс-лист через адмін-панель", githubToken);
+                if (res.success) {
+                  setPrices(newPrices);
+                  alert(res.message);
+                } else {
+                  alert(res.message);
+                }
+                return res.success;
               }}
             />
           )}
@@ -160,9 +146,14 @@ export default function AdminPage() {
             <SpecialistsEditor
               initialSpecialists={specialists}
               onSave={async (newList) => {
-                const ok = await saveSpecialists(newList);
-                if (ok) setSpecialists(newList);
-                return ok;
+                const res = await commitJsonToGithub("specialists.json", newList, "feat: оновлено спеціалістів через адмін-панель", githubToken);
+                if (res.success) {
+                  setSpecialists(newList);
+                  alert(res.message);
+                } else {
+                  alert(res.message);
+                }
+                return res.success;
               }}
             />
           )}
@@ -171,44 +162,49 @@ export default function AdminPage() {
             <GalleryEditor
               initialImages={gallery}
               onSave={async (newImages) => {
-                const ok = await saveGallery(newImages);
-                if (ok) setGallery(newImages);
-                return ok;
+                const res = await commitJsonToGithub("gallery.json", newImages, "feat: оновлено фотогалерею через адмін-панель", githubToken);
+                if (res.success) {
+                  setGallery(newImages);
+                  alert(res.message);
+                } else {
+                  alert(res.message);
+                }
+                return res.success;
               }}
             />
           )}
 
           {activeTab === "settings" && (
             <div className="bg-background rounded-2xl border border-border p-6 sm:p-8 space-y-6 max-w-3xl">
-              <h2 className="text-2xl font-bold text-foreground">Налаштування зв'язку з Firebase</h2>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Щоб адмін-панель зберігала дані у безкоштовну хмарну базу Google Firebase, виконайте 3 прості кроки:
-              </p>
-
-              <ol className="space-y-4 list-decimal list-inside text-sm text-foreground">
-                <li className="leading-relaxed">
-                  Перейдіть на сайт <a href="https://console.firebase.google.com/" target="_blank" rel="noreferrer" className="text-primary underline font-bold hover:text-primary/80">Firebase Console</a> та увійдіть через свій Google-акаунт.
-                </li>
-                <li className="leading-relaxed">
-                  Натисніть <strong>«Створити проєкт» (Add project)</strong>, введіть назву <code>dobrodent</code> та виберіть створити безкоштовну базу даних <strong>Firestore Database</strong> та <strong>Storage</strong>.
-                </li>
-                <li className="leading-relaxed">
-                  Скопіюйте 6 ключів проєкту у файл <code>.env.local</code> вашого сайту:
-                </li>
-              </ol>
-
-              <div className="bg-muted p-4 rounded-xl font-mono text-xs text-foreground overflow-x-auto border border-border space-y-1">
-                <p>NEXT_PUBLIC_FIREBASE_API_KEY=ваш_api_key</p>
-                <p>NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=dobrodent.firebaseapp.com</p>
-                <p>NEXT_PUBLIC_FIREBASE_PROJECT_ID=dobrodent</p>
-                <p>NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=dobrodent.appspot.com</p>
-                <p>NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=123456789</p>
-                <p>NEXT_PUBLIC_FIREBASE_APP_ID=1:123456789:web:abcdef</p>
+              <div>
+                <h2 className="text-2xl font-bold text-foreground">Авто-комміти через GitHub API (Git-SSG)</h2>
+                <p className="text-sm text-muted-foreground leading-relaxed mt-1">
+                  Щоб кнопка <strong>«Опублікувати на сайт»</strong> могла автоматично робити комміт у ваш репозиторій на GitHub, вкажіть ваш GitHub Personal Access Token з правом <code>repo</code>:
+                </p>
               </div>
 
-              <div className="pt-4 border-t border-border">
+              <div className="space-y-3">
+                <label className="block text-sm font-semibold text-foreground">
+                  GitHub Access Token (ghp_...)
+                </label>
+                <div className="flex gap-3">
+                  <input
+                    type="password"
+                    value={githubToken}
+                    onChange={(e) => setGithubToken(e.target.value)}
+                    placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
+                    className="flex-grow px-4 py-2.5 bg-muted/40 border border-border rounded-xl text-sm font-mono text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                  <button
+                    onClick={handleSaveToken}
+                    className="px-5 py-2.5 bg-primary text-primary-foreground text-sm font-bold rounded-xl hover:bg-primary/90 transition-colors shadow-sm flex items-center gap-2 cursor-pointer"
+                  >
+                    {tokenSaved ? <CheckCircle2 className="w-4 h-4 text-green-300" /> : <GitCommit className="w-4 h-4" />}
+                    {tokenSaved ? "Збережено!" : "Зберегти токен"}
+                  </button>
+                </div>
                 <p className="text-xs text-muted-foreground">
-                  Статус Firebase зараз: {isFirebaseConfigured ? <span className="text-green-500 font-bold">🟢 Підключено</span> : <span className="text-amber-500 font-bold">🟡 Очікує ключі (працює локальний режим)</span>}
+                  Створити токен можна у GitHub: <code>Settings -&gt; Developer Settings -&gt; Personal access tokens (classic) -&gt; Generate new token</code> із відміченим прапорцем <strong>repo</strong>.
                 </p>
               </div>
             </div>

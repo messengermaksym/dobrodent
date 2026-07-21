@@ -1,31 +1,12 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
 import ScrollReveal from "@/components/ScrollReveal";
 import StaggerContainer, { StaggerItem } from "@/components/StaggerContainer";
-import { fetchGallery } from "@/lib/contentService";
-import { defaultGalleryImages, GalleryImage } from "@/data/defaultGallery";
-
-const prefix = process.env.NODE_ENV === 'production' ? '/dobrodent' : '';
+import staticGallery from "@/content/gallery.json";
+import { GalleryImage } from "@/data/defaultGallery";
+import { getImageUrl } from "@/lib/getImageUrl";
 
 export default function GalleryContent() {
-  const [images, setImages] = useState<GalleryImage[]>(defaultGalleryImages);
-
-  useEffect(() => {
-    async function loadGallery() {
-      const data = await fetchGallery();
-      if (data && data.length > 0) {
-        setImages(data);
-      }
-    }
-    loadGallery();
-  }, []);
-
-  const getImageUrl = (url: string) => {
-    if (url.startsWith("http") || url.startsWith("data:")) return url;
-    return `${prefix}${url}`;
-  };
+  const images: GalleryImage[] = staticGallery as GalleryImage[];
 
   return (
     <div className="pt-8 pb-16 sm:pt-12 sm:pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
