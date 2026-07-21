@@ -1,167 +1,80 @@
-import { db, storage, isFirebaseConfigured } from "./firebase";
-import { doc, getDoc, setDoc } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { defaultPrices, PriceCategory } from "@/data/defaultPrices";
 import { defaultSpecialists, Specialist } from "@/data/defaultSpecialists";
 import { defaultGalleryImages, GalleryImage } from "@/data/defaultGallery";
-
-const STORAGE_KEY_PRICES = "dobrodent_custom_prices";
-const STORAGE_KEY_SPECIALISTS = "dobrodent_custom_specialists";
-const STORAGE_KEY_GALLERY = "dobrodent_custom_gallery";
+import staticPrices from "@/content/prices.json";
+import staticSpecialists from "@/content/specialists.json";
+import staticGallery from "@/content/gallery.json";
 
 // ---------------- PRICES ----------------
 export async function fetchPrices(): Promise<PriceCategory[]> {
-  if (isFirebaseConfigured && db) {
-    try {
-      const docRef = doc(db, "content", "prices");
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists() && docSnap.data().categories) {
-        return docSnap.data().categories as PriceCategory[];
-      }
-    } catch (e) {
-      console.warn("Failed to fetch prices from Firestore, using fallback", e);
-    }
-  }
-
-  // LocalStorage check (for local testing before DB keys added)
-  if (typeof window !== "undefined") {
-    const saved = localStorage.getItem(STORAGE_KEY_PRICES);
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch {}
-    }
-  }
-
-  return defaultPrices;
+  return staticPrices as PriceCategory[];
 }
 
 export async function savePrices(categories: PriceCategory[]): Promise<boolean> {
-  if (typeof window !== "undefined") {
-    localStorage.setItem(STORAGE_KEY_PRICES, JSON.stringify(categories));
-  }
-
-  if (isFirebaseConfigured && db) {
-    try {
-      const docRef = doc(db, "content", "prices");
-      await setDoc(docRef, { categories, updatedAt: new Date().toISOString() });
-      return true;
-    } catch (e) {
-      console.error("Error saving prices to Firestore", e);
-      return false;
-    }
-  }
-
   return true;
 }
 
 // ---------------- SPECIALISTS ----------------
 export async function fetchSpecialists(): Promise<Specialist[]> {
-  if (isFirebaseConfigured && db) {
-    try {
-      const docRef = doc(db, "content", "specialists");
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists() && docSnap.data().list) {
-        return docSnap.data().list as Specialist[];
-      }
-    } catch (e) {
-      console.warn("Failed to fetch specialists from Firestore, using fallback", e);
-    }
-  }
-
-  if (typeof window !== "undefined") {
-    const saved = localStorage.getItem(STORAGE_KEY_SPECIALISTS);
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch {}
-    }
-  }
-
-  return defaultSpecialists;
+  return staticSpecialists as Specialist[];
 }
 
-export async function saveSpecialists(list: Specialist[]): Promise<boolean> {
-  if (typeof window !== "undefined") {
-    localStorage.setItem(STORAGE_KEY_SPECIALISTS, JSON.stringify(list));
-  }
-
-  if (isFirebaseConfigured && db) {
-    try {
-      const docRef = doc(db, "content", "specialists");
-      await setDoc(docRef, { list, updatedAt: new Date().toISOString() });
-      return true;
-    } catch (e) {
-      console.error("Error saving specialists to Firestore", e);
-      return false;
-    }
-  }
-
+export async function saveSpecialists(specialists: Specialist[]): Promise<boolean> {
   return true;
 }
 
 // ---------------- GALLERY ----------------
 export async function fetchGallery(): Promise<GalleryImage[]> {
-  if (isFirebaseConfigured && db) {
-    try {
-      const docRef = doc(db, "content", "gallery");
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists() && docSnap.data().images) {
-        return docSnap.data().images as GalleryImage[];
-      }
-    } catch (e) {
-      console.warn("Failed to fetch gallery from Firestore, using fallback", e);
-    }
-  }
-
-  if (typeof window !== "undefined") {
-    const saved = localStorage.getItem(STORAGE_KEY_GALLERY);
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch {}
-    }
-  }
-
-  return defaultGalleryImages;
+  return staticGallery as GalleryImage[];
 }
 
 export async function saveGallery(images: GalleryImage[]): Promise<boolean> {
-  if (typeof window !== "undefined") {
-    localStorage.setItem(STORAGE_KEY_GALLERY, JSON.stringify(images));
-  }
-
-  if (isFirebaseConfigured && db) {
-    try {
-      const docRef = doc(db, "content", "gallery");
-      await setDoc(docRef, { images, updatedAt: new Date().toISOString() });
-      return true;
-    } catch (e) {
-      console.error("Error saving gallery to Firestore", e);
-      return false;
-    }
-  }
-
   return true;
 }
 
-// ---------------- IMAGE UPLOAD ----------------
+// ---------------- FAST & OPTIMIZED IMAGE UPLOAD ----------------
 export async function uploadImage(file: File, folder: string = "uploads"): Promise<string> {
-  if (isFirebaseConfigured && storage) {
-    try {
-      const filename = `${folder}/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
-      const storageRef = ref(storage, filename);
-      await uploadBytes(storageRef, file);
-      return await getDownloadURL(storageRef);
-    } catch (e) {
-      console.error("Error uploading to Firebase Storage", e);
-    }
-  }
-
-  // Fallback to data URL for offline / pre-firebase testing
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        try {
+          const canvas = document.createElement("canvas");
+          const MAX_WIDTH = 800;
+          const MAX_HEIGHT = 800;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height *= MAX_WIDTH / width;
+              width = MAX_WIDTH;
+            }
+          } else {
+            if (height > MAX_HEIGHT) {
+              width *= MAX_HEIGHT / height;
+              height = MAX_HEIGHT;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx?.drawImage(img, 0, 0, width, height);
+
+          // Convert to compressed WebP Data URL (~40-80KB)
+          const dataUrl = canvas.toDataURL("image/webp", 0.85);
+          resolve(dataUrl);
+        } catch (err) {
+          resolve(e.target?.result as string);
+        }
+      };
+      img.onerror = () => {
+        resolve(e.target?.result as string);
+      };
+      img.src = e.target?.result as string;
+    };
     reader.onerror = (error) => reject(error);
     reader.readAsDataURL(file);
   });
