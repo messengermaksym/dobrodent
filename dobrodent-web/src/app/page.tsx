@@ -19,12 +19,15 @@ export default function Home() {
       <section className="relative bg-muted pt-8 pb-16 sm:pt-16 sm:pb-32 overflow-hidden border-b border-border">
         <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-16 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-12 items-center">
-            <ScrollReveal variant="fadeIn" delay={0.2} className="lg:order-2 -mx-4 sm:-mx-6 -mt-8 sm:-mt-16 lg:m-0">
+            <div className="lg:order-2 -mx-4 sm:-mx-6 -mt-8 sm:-mt-16 lg:m-0">
               <div className="relative aspect-[4/3] rounded-none lg:rounded-2xl overflow-hidden border-0 lg:border lg:border-border">
-                <img fetchPriority="high" src={`${prefix}/dobrodent-main-banner.webp`} alt="Добродент клініка" width={1440} height={1080} className="w-full h-full object-cover" />
+                <picture>
+                  <source media="(max-width: 640px)" srcSet={`${prefix}/dobrodent-main-banner-mobile.webp`} type="image/webp" />
+                  <img fetchPriority="high" src={`${prefix}/dobrodent-main-banner.webp`} alt="Добродент клініка" width={1440} height={1080} className="w-full h-full object-cover" />
+                </picture>
                 <div className="absolute inset-0 pointer-events-none lg:hidden" style={{ background: "linear-gradient(to bottom, transparent, rgba(248, 249, 250, 0.5) 50%, #f8f9fa 100%)" }} />
               </div>
-            </ScrollReveal>
+            </div>
  
             {/* Text Column - Second in DOM, ordered first on desktop */}
             <ScrollReveal variant="fadeUp" className="lg:order-1">
