@@ -50,6 +50,22 @@ details[open] summary ~ * {
   animation: slideDown 0.25s ease-out;
 }
 
+/* Pure GPU CSS Entry Animation for Hero Image without JS Render Delay */
+@keyframes heroEntry {
+  0% {
+    opacity: 0.85;
+    transform: translateY(12px) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-hero-entry {
+  animation: heroEntry 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 /* Global focus and smooth transitions */
 a, button {
   transition: all 0.2s ease-in-out;
