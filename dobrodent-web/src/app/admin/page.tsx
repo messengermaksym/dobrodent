@@ -343,37 +343,13 @@ export default function AdminPage() {
             <h1 className="text-3xl font-bold text-foreground">Панель Управління Контентом</h1>
           </div>
 
-          {/* Header actions */}
-          <div className="flex items-center gap-3 flex-wrap">
-            {/* Save All button — only visible when there are unsaved changes */}
-            {isDirty && (
-              <button
-                onClick={handleSaveAll}
-                disabled={isSavingAll}
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-primary-foreground text-sm font-semibold rounded-xl hover:bg-primary/90 active:scale-[0.98] cursor-pointer transition-all shadow-sm disabled:opacity-60 disabled:cursor-wait"
-              >
-                {isSavingAll ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    Зберігається…
-                  </>
-                ) : (
-                  <>
-                    <Save className="w-4 h-4" />
-                    Зберегти все
-                  </>
-                )}
-              </button>
-            )}
-
-            <button
-              onClick={handleLogout}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-muted hover:bg-muted/80 text-foreground text-sm font-medium rounded-xl hover:scale-[1.02] active:scale-[0.98] cursor-pointer transition-all border border-border shadow-sm"
-            >
-              <LogOut className="w-4 h-4" />
-              Вийти з кабінету
-            </button>
-          </div>
+          <button
+            onClick={handleLogout}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-muted hover:bg-muted/80 text-foreground text-sm font-medium rounded-xl hover:scale-[1.02] active:scale-[0.98] cursor-pointer transition-all border border-border shadow-sm"
+          >
+            <LogOut className="w-4 h-4" />
+            Вийти з кабінету
+          </button>
         </div>
 
         {/* Unsaved Changes Warning Banner */}
@@ -440,6 +416,27 @@ export default function AdminPage() {
               <span className="w-2 h-2 rounded-full bg-amber-500 inline-block ml-1" title="Є зміни" />
             )}
           </button>
+
+          {/* Save All — pinned to the far right of the tabs row */}
+          {isDirty && (
+            <button
+              onClick={handleSaveAll}
+              disabled={isSavingAll}
+              className="ml-auto inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold text-sm whitespace-nowrap cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all bg-primary text-primary-foreground shadow-sm disabled:opacity-60 disabled:cursor-wait"
+            >
+              {isSavingAll ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Зберігається…
+                </>
+              ) : (
+                <>
+                  <Save className="w-4 h-4" />
+                  Зберегти все
+                </>
+              )}
+            </button>
+          )}
         </div>
 
         {/* Tab Content */}

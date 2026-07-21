@@ -1,6 +1,6 @@
 const GITHUB_REPO_OWNER = "messengermaksym";
 const GITHUB_REPO_NAME = "dobrodent";
-const GITHUB_BRANCH = "main";
+const GITHUB_BRANCH = "serif";
 
 export async function commitJsonToGithub(
   filePath: string,
