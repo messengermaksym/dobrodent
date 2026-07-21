@@ -8,7 +8,7 @@ import GalleryEditor from "@/components/admin/GalleryEditor";
 import staticPrices from "@/content/prices.json";
 import staticSpecialists from "@/content/specialists.json";
 import staticGallery from "@/content/gallery.json";
-import { commitJsonToGithub } from "@/lib/githubService";
+import { commitJsonToGithub, commitMultipleJsonToGithub } from "@/lib/githubService";
 import { PriceCategory } from "@/data/defaultPrices";
 import { Specialist } from "@/data/defaultSpecialists";
 import { GalleryImage } from "@/data/defaultGallery";
@@ -253,56 +253,41 @@ export default function AdminPage() {
     });
   }, [isDirty]);
 
-  // ---- Save All ----
+  // ---- Save All (one atomic commit via Git Trees API) ----
   const handleSaveAll = useCallback(async () => {
     if (!isDirty) return;
     setIsSavingAll(true);
 
-    const tasks: Promise<{ section: string; success: boolean; message: string }>[] = [];
+    // Build list of changed files
+    const filesToSave: { path: string; content: unknown }[] = [];
+    if (isPricesDirty) filesToSave.push({ path: "prices.json", content: prices });
+    if (isSpecialistsDirty) filesToSave.push({ path: "specialists.json", content: specialists });
+    if (isGalleryDirty) filesToSave.push({ path: "gallery.json", content: gallery });
 
-    if (isPricesDirty) {
-      tasks.push(
-        commitJsonToGithub(
-          "prices.json",
-          prices,
-          "feat: оновлено прайс-лист через адмін-панель",
-          githubToken
-        ).then((res) => ({ section: "Прайс-лист", ...res }))
-      );
-    }
-    if (isSpecialistsDirty) {
-      tasks.push(
-        commitJsonToGithub(
-          "specialists.json",
-          specialists,
-          "feat: оновлено спеціалістів через адмін-панель",
-          githubToken
-        ).then((res) => ({ section: "Спеціалісти", ...res }))
-      );
-    }
-    if (isGalleryDirty) {
-      tasks.push(
-        commitJsonToGithub(
-          "gallery.json",
-          gallery,
-          "feat: оновлено фотогалерею через адмін-панель",
-          githubToken
-        ).then((res) => ({ section: "Галерея", ...res }))
-      );
-    }
+    // Build human-readable commit message
+    const sections = [
+      isPricesDirty && "прайс-лист",
+      isSpecialistsDirty && "спеціалістів",
+      isGalleryDirty && "фотогалерею",
+    ]
+      .filter(Boolean)
+      .join(", ");
 
-    const results = await Promise.all(tasks);
+    const res = await commitMultipleJsonToGithub(
+      filesToSave,
+      `feat: оновлено ${sections} через адмін-панель`,
+      githubToken
+    );
 
-    results.forEach((res) => {
-      if (res.success) {
-        if (res.section === "Прайс-лист") setSavedPrices(prices);
-        if (res.section === "Спеціалісти") setSavedSpecialists(specialists);
-        if (res.section === "Галерея") setSavedGallery(gallery);
-        addToast("success", `✅ ${res.section}: збережено!`);
-      } else {
-        addToast("error", `❌ ${res.section}: ${res.message}`);
-      }
-    });
+    if (res.success) {
+      // Mark all saved sections as clean
+      if (isPricesDirty) setSavedPrices(prices);
+      if (isSpecialistsDirty) setSavedSpecialists(specialists);
+      if (isGalleryDirty) setSavedGallery(gallery);
+      addToast("success", `✅ Збережено: ${sections}. Сайт оновиться за ~1 хвилину.`);
+    } else {
+      addToast("error", `❌ Помилка: ${res.message}`);
+    }
 
     setIsSavingAll(false);
   }, [isDirty, isPricesDirty, isSpecialistsDirty, isGalleryDirty, prices, specialists, gallery, githubToken, addToast]);
