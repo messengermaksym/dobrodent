@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import AdminLoginForm from "@/components/admin/AdminLoginForm";
 import PriceEditor from "@/components/admin/PriceEditor";
 import SpecialistsEditor from "@/components/admin/SpecialistsEditor";
@@ -12,11 +12,86 @@ import { commitJsonToGithub } from "@/lib/githubService";
 import { PriceCategory } from "@/data/defaultPrices";
 import { Specialist } from "@/data/defaultSpecialists";
 import { GalleryImage } from "@/data/defaultGallery";
-import { Tag, Users, Image as ImageIcon, LogOut, Key, GitCommit, CheckCircle2, AlertCircle } from "lucide-react";
+import { Tag, Users, Image as ImageIcon, LogOut, AlertCircle, AlertTriangle, X } from "lucide-react";
 
+// ---------------------------------------------------------------------------
+// Custom confirm dialog (replaces browser's window.confirm)
+// ---------------------------------------------------------------------------
+interface ConfirmDialogProps {
+  isDirty: boolean;
+  onConfirm: () => void;
+  onCancel: () => void;
+}
+
+function ConfirmDialog({ isDirty, onConfirm, onCancel }: ConfirmDialogProps) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        onClick={onCancel}
+      />
+
+      {/* Modal */}
+      <div className="relative bg-background border border-border rounded-2xl shadow-2xl max-w-md w-full p-6 sm:p-8 animate-in fade-in zoom-in-95 duration-200">
+        {/* Close button */}
+        <button
+          onClick={onCancel}
+          className="absolute top-4 right-4 p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
+        >
+          <X className="w-4 h-4" />
+        </button>
+
+        {/* Icon */}
+        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-5 ${isDirty ? "bg-amber-500/15" : "bg-muted"}`}>
+          {isDirty
+            ? <AlertTriangle className="w-6 h-6 text-amber-500" />
+            : <AlertCircle className="w-6 h-6 text-muted-foreground" />
+          }
+        </div>
+
+        {/* Title */}
+        <h2 className="text-xl font-bold text-foreground text-center mb-2">
+          {isDirty ? "Є незбережені зміни!" : "Вийти з адмін-панелі?"}
+        </h2>
+
+        {/* Body */}
+        <p className="text-sm text-muted-foreground text-center leading-relaxed mb-7">
+          {isDirty
+            ? "Ви внесли зміни, які ще не збережено на сайт. Якщо вийдете зараз — усі зміни будуть втрачені."
+            : "Змін не було зроблено. Ви впевнені, що хочете вийти з адмін-панелі?"}
+        </p>
+
+        {/* Buttons */}
+        <div className="flex flex-col sm:flex-row gap-3">
+          <button
+            onClick={onCancel}
+            className="flex-1 py-2.5 px-4 bg-muted hover:bg-muted/80 text-foreground text-sm font-semibold rounded-xl transition-colors cursor-pointer border border-border"
+          >
+            {isDirty ? "Залишитися і зберегти" : "Залишитися"}
+          </button>
+          <button
+            onClick={onConfirm}
+            className={`flex-1 py-2.5 px-4 text-sm font-semibold rounded-xl transition-colors cursor-pointer shadow-sm ${
+              isDirty
+                ? "bg-red-500 hover:bg-red-600 text-white"
+                : "bg-primary hover:bg-primary/90 text-primary-foreground"
+            }`}
+          >
+            {isDirty ? "Вийти без збереження" : "Вийти"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Main Admin Page
+// ---------------------------------------------------------------------------
 export default function AdminPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [activeTab, setActiveTab] = useState<"prices" | "specialists" | "gallery" | "settings">("prices");
+  const [activeTab, setActiveTab] = useState<"prices" | "specialists" | "gallery">("prices");
   const [isLoading, setIsLoading] = useState(true);
 
   // Editable States
@@ -24,13 +99,19 @@ export default function AdminPage() {
   const [specialists, setSpecialists] = useState<Specialist[]>(staticSpecialists as Specialist[]);
   const [gallery, setGallery] = useState<GalleryImage[]>(staticGallery as GalleryImage[]);
 
-  // Saved References (to check for dirty state)
+  // Saved References (to detect unsaved changes)
   const [savedPrices, setSavedPrices] = useState<PriceCategory[]>(staticPrices as PriceCategory[]);
   const [savedSpecialists, setSavedSpecialists] = useState<Specialist[]>(staticSpecialists as Specialist[]);
   const [savedGallery, setSavedGallery] = useState<GalleryImage[]>(staticGallery as GalleryImage[]);
 
   const [githubToken, setGithubToken] = useState("");
-  const [tokenSaved, setTokenSaved] = useState(false);
+
+  // Custom confirm dialog state
+  const [confirmDialog, setConfirmDialog] = useState<{
+    show: boolean;
+    isDirty: boolean;
+    onConfirm: () => void;
+  } | null>(null);
 
   // Check if anything has been modified but not saved
   const isPricesDirty = JSON.stringify(prices) !== JSON.stringify(savedPrices);
@@ -48,7 +129,7 @@ export default function AdminPage() {
     setIsLoading(false);
   }, []);
 
-  // 1. Prevent closing the tab / reloading if there are unsaved changes
+  // Prevent closing the tab / reloading if there are unsaved changes
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (isDirty) {
@@ -61,22 +142,25 @@ export default function AdminPage() {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [isDirty]);
 
-  // 2. Intercept local link transitions / navigation clicks
+  // Intercept anchor link clicks (navigation away from /admin)
   useEffect(() => {
     const handleAnchorClick = (e: MouseEvent) => {
-      if (!isDirty) return;
       const target = (e.target as HTMLElement).closest("a");
       if (target && target.href) {
         const url = new URL(target.href);
-        // If transitioning outside admin or to another route on the website
         if (url.pathname !== window.location.pathname) {
-          const confirmLeave = window.confirm(
-            "У вас є незбережені зміни! Вони будуть втрачені, якщо ви залишите сторінку. Продовжити?"
-          );
-          if (!confirmLeave) {
-            e.preventDefault();
-            e.stopPropagation();
-          }
+          e.preventDefault();
+          e.stopPropagation();
+
+          const href = target.href;
+          setConfirmDialog({
+            show: true,
+            isDirty,
+            onConfirm: () => {
+              setConfirmDialog(null);
+              window.location.href = href;
+            },
+          });
         }
       }
     };
@@ -84,201 +168,152 @@ export default function AdminPage() {
     return () => document.removeEventListener("click", handleAnchorClick, true);
   }, [isDirty]);
 
-  const handleLogout = () => {
-    if (isDirty) {
-      const confirmLeave = window.confirm("У вас є незбережені зміни! Ви дійсно хочете вийти?");
-      if (!confirmLeave) return;
-    }
-    sessionStorage.removeItem("dobrodent_admin_logged");
-    setIsLoggedIn(false);
-  };
-
-  const handleSaveToken = () => {
-    localStorage.setItem("dobrodent_github_token", githubToken.trim());
-    setTokenSaved(true);
-    setTimeout(() => setTokenSaved(false), 3000);
-  };
+  const handleLogout = useCallback(() => {
+    setConfirmDialog({
+      show: true,
+      isDirty,
+      onConfirm: () => {
+        setConfirmDialog(null);
+        sessionStorage.removeItem("dobrodent_admin_logged");
+        setIsLoggedIn(false);
+      },
+    });
+  }, [isDirty]);
 
   if (!isLoggedIn) {
     return <AdminLoginForm onSuccess={() => setIsLoggedIn(true)} />;
   }
 
   return (
-    <div className="pt-8 pb-16 sm:pt-12 sm:pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      {/* Admin Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-8 mb-8 border-b border-border">
-        <div>
-          <span className="text-xs font-semibold uppercase tracking-wider text-primary block mb-1">
-            Клініка Добродент
-          </span>
-          <h1 className="text-3xl font-bold text-foreground">Панель Управління Контентом</h1>
-        </div>
-        <button
-          onClick={handleLogout}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-muted hover:bg-muted/80 text-foreground text-sm font-medium rounded-xl hover:scale-[1.02] active:scale-[0.98] cursor-pointer transition-all border border-border shadow-sm"
-        >
-          <LogOut className="w-4 h-4" />
-          Вийти з кабінету
-        </button>
-      </div>
-
-      {/* Unsaved Changes Warning Banner */}
-      {isDirty && (
-        <div className="mb-6 p-4 bg-amber-500/10 border border-amber-500/30 rounded-2xl flex items-center gap-3 text-amber-800 dark:text-amber-300 shadow-sm animate-pulse">
-          <AlertCircle className="w-5 h-5 shrink-0 text-amber-600 dark:text-amber-400" />
-          <div className="text-sm font-semibold">
-            ⚠️ Увага: Внесено зміни, які не збережено! Натисніть кнопку «Зберегти зміни» у відповідній вкладці, щоб опублікувати їх на сайт.
-          </div>
-        </div>
+    <>
+      {/* Custom Confirm Dialog */}
+      {confirmDialog?.show && (
+        <ConfirmDialog
+          isDirty={confirmDialog.isDirty}
+          onConfirm={confirmDialog.onConfirm}
+          onCancel={() => setConfirmDialog(null)}
+        />
       )}
 
-      {/* Tabs */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 border-b border-border no-scrollbar">
-        <button
-          onClick={() => setActiveTab("prices")}
-          className={`flex items-center gap-2 px-5 py-3 rounded-xl font-medium text-sm transition-all whitespace-nowrap cursor-pointer hover:scale-[1.02] active:scale-[0.98] ${
-            activeTab === "prices"
-              ? "bg-primary text-primary-foreground shadow-sm font-bold"
-              : "bg-muted/40 text-muted-foreground hover:bg-muted hover:text-foreground"
-          }`}
-        >
-          <Tag className="w-4 h-4" />
-          Прайс-лист {isPricesDirty && <span className="w-2 h-2 rounded-full bg-amber-500 inline-block animate-ping ml-1" title="Є зміни" />}
-        </button>
-
-        <button
-          onClick={() => setActiveTab("specialists")}
-          className={`flex items-center gap-2 px-5 py-3 rounded-xl font-medium text-sm transition-all whitespace-nowrap cursor-pointer hover:scale-[1.02] active:scale-[0.98] ${
-            activeTab === "specialists"
-              ? "bg-primary text-primary-foreground shadow-sm font-bold"
-              : "bg-muted/40 text-muted-foreground hover:bg-muted hover:text-foreground"
-          }`}
-        >
-          <Users className="w-4 h-4" />
-          Спеціалісти {isSpecialistsDirty && <span className="w-2 h-2 rounded-full bg-amber-500 inline-block animate-ping ml-1" title="Є зміни" />}
-        </button>
-
-        <button
-          onClick={() => setActiveTab("gallery")}
-          className={`flex items-center gap-2 px-5 py-3 rounded-xl font-medium text-sm transition-all whitespace-nowrap cursor-pointer hover:scale-[1.02] active:scale-[0.98] ${
-            activeTab === "gallery"
-              ? "bg-primary text-primary-foreground shadow-sm font-bold"
-              : "bg-muted/40 text-muted-foreground hover:bg-muted hover:text-foreground"
-          }`}
-        >
-          <ImageIcon className="w-4 h-4" />
-          Фотогалерея {isGalleryDirty && <span className="w-2 h-2 rounded-full bg-amber-500 inline-block animate-ping ml-1" title="Є зміни" />}
-        </button>
-
-        <button
-          onClick={() => setActiveTab("settings")}
-          className={`flex items-center gap-2 px-5 py-3 rounded-xl font-medium text-sm transition-all whitespace-nowrap cursor-pointer hover:scale-[1.02] active:scale-[0.98] ${
-            activeTab === "settings"
-              ? "bg-primary text-primary-foreground shadow-sm font-bold"
-              : "bg-muted/40 text-muted-foreground hover:bg-muted hover:text-foreground"
-          }`}
-        >
-          <Key className="w-4 h-4" />
-          Налаштування GitHub
-        </button>
-      </div>
-
-      {/* Tab Content (using hidden/block so states are preserved when switching tabs) */}
-      {isLoading ? (
-        <div className="py-12 text-center text-muted-foreground">Завантаження контенту...</div>
-      ) : (
-        <div className="space-y-6">
-          <div className={activeTab === "prices" ? "block" : "hidden"}>
-            <PriceEditor
-              categories={prices}
-              onChange={setPrices}
-              onSave={async (newPrices) => {
-                const res = await commitJsonToGithub("prices.json", newPrices, "feat: оновлено прайс-лист через адмін-панель", githubToken);
-                if (res.success) {
-                  setSavedPrices(newPrices);
-                  alert(res.message);
-                } else {
-                  alert(res.message);
-                }
-                return res.success;
-              }}
-            />
+      <div className="pt-8 pb-16 sm:pt-12 sm:pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Admin Header */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-8 mb-8 border-b border-border">
+          <div>
+            <span className="text-xs font-semibold uppercase tracking-wider text-primary block mb-1">
+              Клініка Добродент
+            </span>
+            <h1 className="text-3xl font-bold text-foreground">Панель Управління Контентом</h1>
           </div>
+          <button
+            onClick={handleLogout}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-muted hover:bg-muted/80 text-foreground text-sm font-medium rounded-xl hover:scale-[1.02] active:scale-[0.98] cursor-pointer transition-all border border-border shadow-sm"
+          >
+            <LogOut className="w-4 h-4" />
+            Вийти з кабінету
+          </button>
+        </div>
 
-          <div className={activeTab === "specialists" ? "block" : "hidden"}>
-            <SpecialistsEditor
-              specialists={specialists}
-              onChange={setSpecialists}
-              onSave={async (newList) => {
-                const res = await commitJsonToGithub("specialists.json", newList, "feat: оновлено спеціалістів через адмін-панель", githubToken);
-                if (res.success) {
-                  setSavedSpecialists(newList);
-                  alert(res.message);
-                } else {
-                  alert(res.message);
-                }
-                return res.success;
-              }}
-            />
-          </div>
-
-          <div className={activeTab === "gallery" ? "block" : "hidden"}>
-            <GalleryEditor
-              images={gallery}
-              onChange={setGallery}
-              onSave={async (newImages) => {
-                const res = await commitJsonToGithub("gallery.json", newImages, "feat: оновлено фотогалерею через адмін-панель", githubToken);
-                if (res.success) {
-                  setSavedGallery(newImages);
-                  alert(res.message);
-                } else {
-                  alert(res.message);
-                }
-                return res.success;
-              }}
-            />
-          </div>
-
-          <div className={activeTab === "settings" ? "block" : "hidden"}>
-            <div className="bg-background rounded-2xl border border-border p-6 sm:p-8 space-y-6 max-w-3xl">
-              <div>
-                <h2 className="text-2xl font-bold text-foreground">Авто-комміти через GitHub API</h2>
-                <p className="text-sm text-muted-foreground leading-relaxed mt-1">
-                  Щоб кнопка <strong>«Опублікувати на сайт»</strong> могла автоматично робити комміт у ваш репозиторій на GitHub, вкажіть ваш GitHub Personal Access Token з правом <code>repo</code>:
-                </p>
-              </div>
-
-              <div className="space-y-3">
-                <label className="block text-sm font-semibold text-foreground">
-                  GitHub Access Token (ghp_...)
-                </label>
-                <div className="flex gap-3">
-                  <input
-                    type="password"
-                    value={githubToken}
-                    onChange={(e) => setGithubToken(e.target.value)}
-                    placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
-                    className="flex-grow px-4 py-2.5 bg-muted/40 border border-border rounded-xl text-sm font-mono text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                  />
-                  <button
-                    onClick={handleSaveToken}
-                    className="px-5 py-2.5 bg-primary text-primary-foreground text-sm font-bold rounded-xl hover:bg-primary/90 transition-colors shadow-sm flex items-center gap-2 cursor-pointer"
-                  >
-                    {tokenSaved ? <CheckCircle2 className="w-4 h-4 text-green-300" /> : <GitCommit className="w-4 h-4" />}
-                    {tokenSaved ? "Збережено!" : "Зберегти токен"}
-                  </button>
-                </div>
-                {process.env.NEXT_PUBLIC_GITHUB_TOKEN && (
-                  <p className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    Системний секретний токен автоматично налаштовано на сервері деплою.
-                  </p>
-                )}
-              </div>
+        {/* Unsaved Changes Warning Banner */}
+        {isDirty && (
+          <div className="mb-6 p-4 bg-amber-500/10 border border-amber-500/30 rounded-2xl flex items-center gap-3 text-amber-800 dark:text-amber-300 shadow-sm animate-pulse">
+            <AlertCircle className="w-5 h-5 shrink-0 text-amber-600 dark:text-amber-400" />
+            <div className="text-sm font-semibold">
+              ⚠️ Увага: Внесено зміни, які не збережено! Натисніть кнопку «Зберегти зміни» у відповідній вкладці, щоб опублікувати їх на сайт.
             </div>
           </div>
+        )}
+
+        {/* Tabs */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 border-b border-border no-scrollbar">
+          <button
+            onClick={() => setActiveTab("prices")}
+            className={`flex items-center gap-2 px-5 py-3 rounded-xl font-medium text-sm transition-all whitespace-nowrap cursor-pointer hover:scale-[1.02] active:scale-[0.98] ${
+              activeTab === "prices"
+                ? "bg-primary text-primary-foreground shadow-sm font-bold"
+                : "bg-muted/40 text-muted-foreground hover:bg-muted hover:text-foreground"
+            }`}
+          >
+            <Tag className="w-4 h-4" />
+            Прайс-лист {isPricesDirty && <span className="w-2 h-2 rounded-full bg-amber-500 inline-block animate-ping ml-1" title="Є зміни" />}
+          </button>
+
+          <button
+            onClick={() => setActiveTab("specialists")}
+            className={`flex items-center gap-2 px-5 py-3 rounded-xl font-medium text-sm transition-all whitespace-nowrap cursor-pointer hover:scale-[1.02] active:scale-[0.98] ${
+              activeTab === "specialists"
+                ? "bg-primary text-primary-foreground shadow-sm font-bold"
+                : "bg-muted/40 text-muted-foreground hover:bg-muted hover:text-foreground"
+            }`}
+          >
+            <Users className="w-4 h-4" />
+            Спеціалісти {isSpecialistsDirty && <span className="w-2 h-2 rounded-full bg-amber-500 inline-block animate-ping ml-1" title="Є зміни" />}
+          </button>
+
+          <button
+            onClick={() => setActiveTab("gallery")}
+            className={`flex items-center gap-2 px-5 py-3 rounded-xl font-medium text-sm transition-all whitespace-nowrap cursor-pointer hover:scale-[1.02] active:scale-[0.98] ${
+              activeTab === "gallery"
+                ? "bg-primary text-primary-foreground shadow-sm font-bold"
+                : "bg-muted/40 text-muted-foreground hover:bg-muted hover:text-foreground"
+            }`}
+          >
+            <ImageIcon className="w-4 h-4" />
+            Фотогалерея {isGalleryDirty && <span className="w-2 h-2 rounded-full bg-amber-500 inline-block animate-ping ml-1" title="Є зміни" />}
+          </button>
         </div>
-      )}
-    </div>
+
+        {/* Tab Content */}
+        {isLoading ? (
+          <div className="py-12 text-center text-muted-foreground">Завантаження контенту...</div>
+        ) : (
+          <div className="space-y-6">
+            <div className={activeTab === "prices" ? "block" : "hidden"}>
+              <PriceEditor
+                categories={prices}
+                onChange={setPrices}
+                onSave={async (newPrices) => {
+                  const res = await commitJsonToGithub("prices.json", newPrices, "feat: оновлено прайс-лист через адмін-панель", githubToken);
+                  if (res.success) {
+                    setSavedPrices(newPrices);
+                  }
+                  alert(res.message);
+                  return res.success;
+                }}
+              />
+            </div>
+
+            <div className={activeTab === "specialists" ? "block" : "hidden"}>
+              <SpecialistsEditor
+                specialists={specialists}
+                onChange={setSpecialists}
+                onSave={async (newList) => {
+                  const res = await commitJsonToGithub("specialists.json", newList, "feat: оновлено спеціалістів через адмін-панель", githubToken);
+                  if (res.success) {
+                    setSavedSpecialists(newList);
+                  }
+                  alert(res.message);
+                  return res.success;
+                }}
+              />
+            </div>
+
+            <div className={activeTab === "gallery" ? "block" : "hidden"}>
+              <GalleryEditor
+                images={gallery}
+                onChange={setGallery}
+                onSave={async (newImages) => {
+                  const res = await commitJsonToGithub("gallery.json", newImages, "feat: оновлено фотогалерею через адмін-панель", githubToken);
+                  if (res.success) {
+                    setSavedGallery(newImages);
+                  }
+                  alert(res.message);
+                  return res.success;
+                }}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+    </>
   );
 }

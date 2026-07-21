@@ -72,9 +72,6 @@ export default function AdminLoginForm({ onSuccess }: AdminLoginFormProps) {
           </button>
         </form>
 
-        <p className="text-xs text-center text-muted-foreground mt-6">
-          За замовчуванням пароль: <code className="bg-muted px-1.5 py-0.5 rounded font-mono text-foreground">dobrodent2026</code>
-        </p>
       </div>
     </div>
   );
