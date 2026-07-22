@@ -9,3 +9,21 @@ original_examples/
 project_roadmap.md
 project_report.md
 pagespeed_plan.md
+
+# Unused public assets
+dobrodent-web/public/*.pdf
+dobrodent-web/public/*.htm
+dobrodent-web/public/*.html
+dobrodent-web/public/about-clinic.png
+dobrodent-web/public/logo.png
+dobrodent-web/public/logo_monogram.png
+dobrodent-web/public/logo_transparent.png
+dobrodent-web/public/d4_hiog.png
+dobrodent-web/public/d5_hiog.png
+dobrodent-web/public/d6_hiog.png
+dobrodent-web/public/*.jpg
+dobrodent-web/public/file.svg
+dobrodent-web/public/globe.svg
+dobrodent-web/public/next.svg
+dobrodent-web/public/vercel.svg
+dobrodent-web/public/window.svg
