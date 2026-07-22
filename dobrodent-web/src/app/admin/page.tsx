@@ -5,9 +5,11 @@ import AdminLoginForm from "@/components/admin/AdminLoginForm";
 import PriceEditor from "@/components/admin/PriceEditor";
 import SpecialistsEditor from "@/components/admin/SpecialistsEditor";
 import GalleryEditor from "@/components/admin/GalleryEditor";
+import AdminSettingsEditor from "@/components/admin/AdminSettingsEditor";
 import staticPrices from "@/content/prices.json";
 import staticSpecialists from "@/content/specialists.json";
 import staticGallery from "@/content/gallery.json";
+import adminConfig from "@/content/admin_config.json";
 import { commitJsonToGithub, commitMultipleJsonToGithub } from "@/lib/githubService";
 import { PriceCategory } from "@/data/defaultPrices";
 import { Specialist } from "@/data/defaultSpecialists";
@@ -23,6 +25,7 @@ import {
   Save,
   CheckCircle2,
   Loader2,
+  KeyRound,
 } from "lucide-react";
 
 // ---------------------------------------------------------------------------
@@ -144,8 +147,9 @@ function ConfirmDialog({ isDirty, onConfirm, onCancel }: ConfirmDialogProps) {
 // ---------------------------------------------------------------------------
 export default function AdminPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [activeTab, setActiveTab] = useState<"prices" | "specialists" | "gallery">("prices");
+  const [activeTab, setActiveTab] = useState<"prices" | "specialists" | "gallery" | "settings">("prices");
   const [isLoading, setIsLoading] = useState(true);
+  const [currentUsername, setCurrentUsername] = useState<string>("admin");
 
   // Editable States
   const [prices, setPrices] = useState<PriceCategory[]>(staticPrices as PriceCategory[]);
@@ -194,6 +198,11 @@ export default function AdminPage() {
     const savedToken =
       localStorage.getItem("dobrodent_github_token") || process.env.NEXT_PUBLIC_GITHUB_TOKEN || "";
     setGithubToken(savedToken);
+
+    const savedUser =
+      localStorage.getItem("dobrodent_admin_user") || adminConfig.username || "admin";
+    setCurrentUsername(savedUser);
+
     setIsLoading(false);
   }, []);
 
@@ -359,9 +368,9 @@ export default function AdminPage() {
         <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 border-b border-border no-scrollbar">
           <button
             onClick={() => setActiveTab("prices")}
-            className={`flex items-center gap-2 px-5 py-3 rounded-xl font-medium text-sm transition-all whitespace-nowrap cursor-pointer hover:scale-[1.02] active:scale-[0.98] ${
+            className={`flex items-center gap-2 px-5 py-3 rounded-xl font-medium text-sm transition-all whitespace-nowrap cursor-pointer active:scale-[0.98] ${
               activeTab === "prices"
-                ? "bg-primary text-primary-foreground shadow-sm font-bold"
+                ? "bg-primary hover:bg-primary/95 text-primary-foreground shadow-sm font-bold"
                 : "bg-muted/40 text-muted-foreground hover:bg-muted hover:text-foreground"
             }`}
           >
@@ -374,9 +383,9 @@ export default function AdminPage() {
 
           <button
             onClick={() => setActiveTab("specialists")}
-            className={`flex items-center gap-2 px-5 py-3 rounded-xl font-medium text-sm transition-all whitespace-nowrap cursor-pointer hover:scale-[1.02] active:scale-[0.98] ${
+            className={`flex items-center gap-2 px-5 py-3 rounded-xl font-medium text-sm transition-all whitespace-nowrap cursor-pointer active:scale-[0.98] ${
               activeTab === "specialists"
-                ? "bg-primary text-primary-foreground shadow-sm font-bold"
+                ? "bg-primary hover:bg-primary/95 text-primary-foreground shadow-sm font-bold"
                 : "bg-muted/40 text-muted-foreground hover:bg-muted hover:text-foreground"
             }`}
           >
@@ -389,9 +398,9 @@ export default function AdminPage() {
 
           <button
             onClick={() => setActiveTab("gallery")}
-            className={`flex items-center gap-2 px-5 py-3 rounded-xl font-medium text-sm transition-all whitespace-nowrap cursor-pointer hover:scale-[1.02] active:scale-[0.98] ${
+            className={`flex items-center gap-2 px-5 py-3 rounded-xl font-medium text-sm transition-all whitespace-nowrap cursor-pointer active:scale-[0.98] ${
               activeTab === "gallery"
-                ? "bg-primary text-primary-foreground shadow-sm font-bold"
+                ? "bg-primary hover:bg-primary/95 text-primary-foreground shadow-sm font-bold"
                 : "bg-muted/40 text-muted-foreground hover:bg-muted hover:text-foreground"
             }`}
           >
@@ -402,12 +411,24 @@ export default function AdminPage() {
             )}
           </button>
 
+          <button
+            onClick={() => setActiveTab("settings")}
+            className={`flex items-center gap-2 px-5 py-3 rounded-xl font-medium text-sm transition-all whitespace-nowrap cursor-pointer active:scale-[0.98] ${
+              activeTab === "settings"
+                ? "bg-primary hover:bg-primary/95 text-primary-foreground shadow-sm font-bold"
+                : "bg-muted/40 text-muted-foreground hover:bg-muted hover:text-foreground"
+            }`}
+          >
+            <KeyRound className="w-4 h-4" />
+            Налаштування доступу
+          </button>
+
           {/* Save All — pinned to the far right of the tabs row */}
           {isDirty && (
             <button
               onClick={handleSaveAll}
               disabled={isSavingAll}
-              className="ml-auto inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold text-sm whitespace-nowrap cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all bg-primary text-primary-foreground shadow-sm disabled:opacity-60 disabled:cursor-wait"
+              className="ml-auto inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold text-sm whitespace-nowrap cursor-pointer active:scale-[0.98] transition-all bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm disabled:opacity-60 disabled:cursor-wait"
             >
               {isSavingAll ? (
                 <>
@@ -492,6 +513,16 @@ export default function AdminPage() {
                   }
                   return res.success;
                 }}
+              />
+            </div>
+
+            <div className={activeTab === "settings" ? "block" : "hidden"}>
+              <AdminSettingsEditor
+                currentUsername={currentUsername}
+                onUpdateSuccess={(newUser) => {
+                  setCurrentUsername(newUser);
+                }}
+                showToast={(type, msg) => addToast(type, msg)}
               />
             </div>
           </div>

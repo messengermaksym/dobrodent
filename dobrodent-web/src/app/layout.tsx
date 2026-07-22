@@ -58,6 +58,10 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  icons: {
+    icon: "/logo_d_icon.png",
+    apple: "/logo_d_icon.png",
+  },
 };
 
 import Header from "@/components/Header";
