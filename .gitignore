@@ -4,3 +4,8 @@ skills-lock.json
 
 # Original website backups and example files
 original_examples/
+
+# Project documentation to ignore
+project_roadmap.md
+project_report.md
+pagespeed_plan.md
