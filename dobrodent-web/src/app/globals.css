@@ -66,6 +66,22 @@ details[open] summary ~ * {
   animation: heroEntry 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* Pure GPU CSS Entry Animation for Hero Text */
+@keyframes heroTextEntry {
+  0% {
+    opacity: 0.9;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-hero-text {
+  animation: heroTextEntry 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 /* Pull hero text block onto gradient on ALL mobile screens */
 @media (max-width: 640px) {
   .hero-short-screen-pull {
