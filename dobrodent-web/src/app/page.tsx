@@ -30,7 +30,7 @@ export default function Home() {
             </div>
  
             {/* Text Column - Second in DOM, ordered first on desktop */}
-            <div className="lg:order-1 hero-short-screen-pull relative z-20 animate-hero-text">
+            <ScrollReveal variant="fadeUp" className="lg:order-1 hero-short-screen-pull relative z-20">
               <div className="max-w-2xl">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-primary mb-4 sm:mb-6" style={{ fontFamily: "var(--font-cormorant-garamond), serif" }}>
                   <span className="text-foreground">Ваша ідеальна усмішка</span> <span className="whitespace-nowrap">починається тут</span>
@@ -52,7 +52,7 @@ export default function Home() {
                   </Link>
                 </div>
               </div>
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>

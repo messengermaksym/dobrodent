@@ -78,8 +78,7 @@ export default function RootLayout({
   return (
     <html lang="uk" className={`${inter.variable} ${montserrat.variable} ${cormorantGaramond.variable} h-full antialiased`}>
       <head>
-        <link rel="preload" href={`${prefix}/dobrodent-main-banner-mobile.webp`} as="image" type="image/webp" media="(max-width: 640px)" fetchPriority="high" />
-        <link rel="preload" href={`${prefix}/dobrodent-main-banner.webp`} as="image" type="image/webp" media="(min-width: 641px)" fetchPriority="high" />
+        <link rel="preload" href={`${prefix}/dobrodent-main-banner.webp`} as="image" type="image/webp" fetchPriority="high" />
       </head>
       <body className="min-h-full flex flex-col font-sans">
         <BookingModalProvider>
