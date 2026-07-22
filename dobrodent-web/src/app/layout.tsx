@@ -23,6 +23,8 @@ const cormorantGaramond = Cormorant_Garamond({
   display: "swap",
 });
 
+const prefix = process.env.NODE_ENV === 'production' ? '/dobrodent' : '';
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://messengermaksym.github.io/dobrodent"),
   title: {
@@ -59,16 +61,14 @@ export const metadata: Metadata = {
     follow: true,
   },
   icons: {
-    icon: "/logo_d_icon.png",
-    apple: "/logo_d_icon.png",
+    icon: `${prefix}/logo_d_icon.png`,
+    apple: `${prefix}/logo_d_icon.png`,
   },
 };
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { BookingModalProvider } from "@/context/BookingModalContext";
-
-const prefix = process.env.NODE_ENV === 'production' ? '/dobrodent' : '';
 
 export default function RootLayout({
   children,
