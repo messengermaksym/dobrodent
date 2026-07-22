@@ -2,12 +2,6 @@
 .agents/
 skills-lock.json
 
-# AI Assistant configuration files
-CLAUDE.md
-AGENTS.md
-**/CLAUDE.md
-**/AGENTS.md
-
 # Original website backups and example files
 original_examples/
 
